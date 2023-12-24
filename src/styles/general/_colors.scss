@@ -1,0 +1,18 @@
+// Name colors
+$tundora: #484848;
+$dustyGray: #979797;
+$tiara: #ccd6d8;
+$white: #fff;
+$bittersweet: #ff7373;
+$cornflowerBlue: #4285f4;
+
+// Colors defenition
+$textColor: $tundora;
+$inputPlaceholderColor: $dustyGray;
+$inputDescriptionTextColor: $dustyGray;
+$inputBackgroundColor: $white;
+$inputErrorTextColor: $bittersweet;
+$inputErrorColor: rgba($bittersweet, 0.5);
+$inputCompleteColor: $cornflowerBlue;
+$inputFocusColor: rgba($cornflowerBlue, 0.5);
+$inputDefaultColor: $tiara;

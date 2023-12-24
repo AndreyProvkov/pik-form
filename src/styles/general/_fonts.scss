@@ -1,0 +1,19 @@
+@font-face {
+  font-family: "GraphikLCG";
+  font-display: "fallback";
+  font-weight: 400;
+  font-style: normal;
+  src: local("GraphikLCG"),
+    url("../assets/fonts/GraphikLCG-Regular.woff2") format("woff2"),
+    url("../assets/fonts/GraphikLCG-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "GraphikLCG";
+  font-display: "fallback";
+  font-weight: 500;
+  font-style: normal;
+  src: local("GraphikLCG"),
+    url("../assets/fonts/GraphikLCG-Medium.woff2") format("woff2"),
+    url("../assets/fonts/GraphikLCG-Medium.woff") format("woff");
+}

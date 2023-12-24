@@ -1,0 +1,12 @@
+@use "general";
+
+html {
+  font-size: general.$rootFontSize;
+}
+
+body {
+  font-family: general.$fontFamily;
+  font-size: general.$baseFontSize;
+  line-height: general.$baseLineHeight;
+  color: general.$textColor;
+}

@@ -5,6 +5,8 @@ $tiara: #ccd6d8;
 $white: #fff;
 $bittersweet: #ff7373;
 $cornflowerBlue: #4285f4;
+$blue: #5491f5;
+$royalBlue: #3477e4;
 
 // Colors defenition
 $textColor: $tundora;
@@ -16,3 +18,7 @@ $inputErrorColor: rgba($bittersweet, 0.5);
 $inputCompleteColor: $cornflowerBlue;
 $inputFocusColor: rgba($cornflowerBlue, 0.5);
 $inputDefaultColor: $tiara;
+$btnBgDisabledColor: rgba($blue, 0.5);
+$btnBgDefaultColor: $blue;
+$btnBgHoverColor: $royalBlue;
+$btnTextColor: $white;

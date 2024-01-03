@@ -1,6 +1,16 @@
 @font-face {
   font-family: "GraphikLCG";
   font-display: "fallback";
+  font-weight: 200;
+  font-style: normal;
+  src: local("GraphikLCG"),
+    url("../assets/fonts/GraphikLCG-Extralight.woff2") format("woff2"),
+    url("../assets/fonts/GraphikLCG-Extralight.woff") format("woff");
+}
+
+@font-face {
+  font-family: "GraphikLCG";
+  font-display: "fallback";
   font-weight: 400;
   font-style: normal;
   src: local("GraphikLCG"),

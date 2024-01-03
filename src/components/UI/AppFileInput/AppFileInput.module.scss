@@ -27,6 +27,7 @@
 
 .label {
   cursor: pointer;
+  position: relative;
 }
 
 .inputFile {
@@ -45,7 +46,8 @@
 }
 
 .text,
-.fileName {
+.fileName,
+.warning {
   display: inline-block;
   font-size: general.$smallFontSize;
   line-height: general.$mediumLineHeight;
@@ -53,6 +55,13 @@
 
 .text {
   width: 100%;
+}
+
+.warning {
+  position: absolute;
+  bottom: -20px;
+  right: 0;
+  color: general.$fileInputWarningTextColor;
 }
 
 .crossButton {

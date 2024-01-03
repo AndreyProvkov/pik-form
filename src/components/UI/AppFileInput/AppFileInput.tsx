@@ -20,9 +20,12 @@ type ImgBlockType = {
 };
 
 const IMAGE_TYPES: string[] = ["image/jpeg", "image/jpg", "image/png"];
+const MAX_SIZE_IN_MB = 10;
+const MAX_SIZE_FILE_MB = MAX_SIZE_IN_MB * 1024 * 1024;
 
 const AppFileInput: React.FC<Props> = ({ text, accept, onChange }) => {
   const [files, setFiles] = useState<File[]>([]);
+  const [warningText, setWarningText] = useState<string>("");
   const TYPE_FILE: { [index: string]: (arg0: ImgBlockType) => JSX.Element } = {
     ...Object.fromEntries(
       IMAGE_TYPES.map((key) => [
@@ -37,13 +40,19 @@ const AppFileInput: React.FC<Props> = ({ text, accept, onChange }) => {
 
   const handleOnChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
-      setFiles([...e.target.files]);
+      if (e.target.files[0].size <= MAX_SIZE_FILE_MB) {
+        setFiles([...e.target.files]);
+      } else {
+        setWarningText(`файл больше ${MAX_SIZE_IN_MB} Мб`);
+      }
     }
   };
 
   const removeFile = () => {
     setFiles([]);
   };
+
+  const resetWarningText = () => setWarningText("");
 
   const ImgBlock: React.FC<ImgBlockType> = ({
     alt = "icon: миниатюра файла",
@@ -75,7 +84,7 @@ const AppFileInput: React.FC<Props> = ({ text, accept, onChange }) => {
           </span>
         </div>
       ) : (
-        <label className={style.label}>
+        <label className={style.label} onClick={resetWarningText}>
           <input
             className={style.inputFile}
             type="file"
@@ -84,6 +93,7 @@ const AppFileInput: React.FC<Props> = ({ text, accept, onChange }) => {
           />
           <span className={style.symbol}>&#43;</span>
           <span className={style.text}>{text}</span>
+          {warningText && <span className={style.warning}>{warningText}</span>}
         </label>
       )}
     </div>

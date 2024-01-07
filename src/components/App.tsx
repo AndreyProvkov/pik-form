@@ -1,26 +1,14 @@
-import { useState } from "react";
-import { AppInput } from "./UI/AppInput/AppInput";
+import { FormPages } from "../pages/FormPages/FormPages";
+import style from "./App.module.scss";
+
+// TODO Использовать react router
+// TODO Убрать хардкод в компонентах
 
 function App() {
-  const [value, setValue] = useState("");
-
-  const onInput = (value: string) => {
-    setValue(value);
-  };
-
   return (
-    <>
-      <AppInput
-        title="Test Test Test"
-        description="введите данные полностью"
-        placeholder="Текст пример"
-        type="text"
-        name="name"
-        mask={""}
-        value={value}
-        onInput={onInput}
-      />
-    </>
+    <main className={style.main}>
+      <FormPages />
+    </main>
   );
 }
 

@@ -2,6 +2,7 @@
 $tundora: #484848;
 $dustyGray: #979797;
 $tiara: #ccd6d8;
+$pampas: #f6f5f3;
 $white: #fff;
 $bittersweet: #ff7373;
 $cornflowerBlue: #4285f4;
@@ -11,6 +12,8 @@ $dodgerBlue: #2f8fff;
 
 // Colors defenition
 $textColor: $tundora;
+$bgMainContainerColor: $pampas;
+$bgFormContainerColor: $white;
 $inputPlaceholderColor: $dustyGray;
 $inputDatePlaceholderColor: rgba($dustyGray, 0.5);
 $inputDescriptionTextColor: $dustyGray;
@@ -20,6 +23,7 @@ $inputErrorColor: rgba($bittersweet, 0.5);
 $inputCompleteColor: $cornflowerBlue;
 $inputFocusColor: rgba($cornflowerBlue, 0.5);
 $inputDefaultColor: $tiara;
+$formTitleColor: $cornflowerBlue;
 $btnBgDisabledColor: rgba($blue, 0.5);
 $btnBgDefaultColor: $blue;
 $btnBgHoverColor: $royalBlue;
@@ -28,3 +32,4 @@ $fileInputBorderColor: $blue;
 $fileInputTextColor: $blue;
 $fileInputCrossColor: $dodgerBlue;
 $fileInputWarningTextColor: $bittersweet;
+$fileInputBlockDescription: $dustyGray;

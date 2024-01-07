@@ -1,0 +1,8 @@
+@use "../styles/general";
+
+.main {
+  display: flow-root;
+  height: 100%;
+  background: general.$bgMainContainerColor;
+  padding-bottom: 143px;
+}

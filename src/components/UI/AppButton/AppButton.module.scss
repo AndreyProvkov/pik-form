@@ -13,6 +13,7 @@
   line-height: general.$largeLineHeight;
   cursor: pointer;
 
+  // TODO добавить плавность анимации и стили когда кнопка нажата
   &:hover {
     background-color: general.$btnBgHoverColor;
   }

@@ -2,6 +2,7 @@
 
 .wrapper {
   max-width: 380px;
+  position: relative;
 }
 
 .titleBlock {
@@ -20,7 +21,7 @@
 }
 
 .description,
-.errorText {
+.warningText {
   color: general.$inputDescriptionTextColor;
   font-size: general.$smallFontSize;
 }
@@ -28,13 +29,25 @@
 .input {
   box-sizing: border-box;
   width: 100%;
-  padding: 20px;
+  padding: 17px;
   line-height: general.$largeLineHeight;
   border-radius: 5px;
   border: 1px solid general.$inputDefaultColor;
   outline: none;
   color: general.$textColor;
   transition: border-color 0.3s, box-shadow 0.3s;
+
+  &#file-upload-button {
+    display: none;
+  }
+
+  &[type="date"] {
+    color: general.$inputDatePlaceholderColor;
+
+    &:focus {
+      color: general.$textColor;
+    }
+  }
 
   &:focus {
     border-color: general.$inputFocusColor;
@@ -50,15 +63,15 @@
     border-color: general.$inputCompleteColor;
   }
 
-  &.error {
+  &.warning {
     border-color: general.$inputErrorColor;
     box-shadow: 0px 0px 5px 0px general.$inputErrorColor;
   }
 }
 
-.errorText {
-  display: block;
-  text-align: right;
+.warningText {
+  position: absolute;
+  bottom: -18px;
+  right: 0;
   color: general.$inputErrorTextColor;
-  margin-top: 5px;
 }

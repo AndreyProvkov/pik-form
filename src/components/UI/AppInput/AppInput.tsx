@@ -5,35 +5,37 @@ import style from "./AppInput.module.scss";
 type AppInputProps = {
   title?: string;
   description?: string;
-  errorText?: string;
+  warningText?: string;
   placeholder?: string;
   inputText?: string;
-  type: "text";
+  type?: "text" | "date";
   name: string;
   value: string;
-  required?: boolean;
-  mask: string | RegExp[];
-  onInput: (value: string) => void;
+  mask?: string | RegExp[];
+  maskChar?: string;
+  customWrapperClass?: string;
+  onInput: (value: string, type?: string) => void;
 };
 
 const AppInput = ({
   title,
   description,
-  errorText,
+  warningText,
   placeholder,
-  type,
+  type = "text",
   name,
   value,
-  required,
-  mask,
+  maskChar = "",
+  mask = "",
+  customWrapperClass,
   onInput,
 }: AppInputProps): JSX.Element => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onInput(e.target.value);
+    // onInput(e.target.value, name);
   };
 
   return (
-    <div className={style.wrapper}>
+    <label className={classNames(style.wrapper, customWrapperClass)}>
       {(title || description) && (
         <div className={style.titleBlock}>
           {title && <h3 className={style.title}>{title}</h3>}
@@ -44,19 +46,18 @@ const AppInput = ({
       )}
       <InputMask
         className={classNames(style.input, {
-          [style.error]: errorText,
-          [style.complete]: !errorText,
+          [style.warning]: warningText,
+          [style.complete]: !warningText,
         })}
         type={type}
         name={name}
         mask={mask}
+        maskChar={maskChar}
         placeholder={placeholder}
-        value={value}
-        required={required}
         onInput={handleInputChange}
       />
-      {errorText && <span className={style.errorText}>{errorText}</span>}
-    </div>
+      {warningText && <span className={style.warningText}>{warningText}</span>}
+    </label>
   );
 };
 

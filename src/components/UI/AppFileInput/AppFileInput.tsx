@@ -7,10 +7,12 @@ import { AnyFileIcon } from "../../../assets/icons/AnyFileIcon";
 // TODO Можно еще разбить на более простые компоненты (выбор файла/когда файл выбран)
 // TODO TYPE_FILE - возможно лучше использовать структуру Map
 // TODO доработать поле для нескольких файлов (здесь же, либо создать отдельный компонент)
+// TODO можно доделать открытие файла при нажатии на нем после загрузки
 
 type Props = {
   text: string;
   accept?: string;
+  maxSizeMb?: number;
   onChange?: (files: FileList) => void;
 };
 
@@ -20,12 +22,16 @@ type ImgBlockType = {
 };
 
 const IMAGE_TYPES: string[] = ["image/jpeg", "image/jpg", "image/png"];
-const MAX_SIZE_IN_MB = 10;
-const MAX_SIZE_FILE_MB = MAX_SIZE_IN_MB * 1024 * 1024;
 
-const AppFileInput: React.FC<Props> = ({ text, accept, onChange }) => {
+const AppFileInput: React.FC<Props> = ({
+  text,
+  accept,
+  maxSizeMb = 0,
+  onChange,
+}) => {
   const [files, setFiles] = useState<File[]>([]);
   const [warningText, setWarningText] = useState<string>("");
+  const MAX_SIZE_FILE = maxSizeMb * 1024 * 1024;
   const TYPE_FILE: { [index: string]: (arg0: ImgBlockType) => JSX.Element } = {
     ...Object.fromEntries(
       IMAGE_TYPES.map((key) => [
@@ -40,10 +46,10 @@ const AppFileInput: React.FC<Props> = ({ text, accept, onChange }) => {
 
   const handleOnChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
-      if (e.target.files[0].size <= MAX_SIZE_FILE_MB) {
+      if (MAX_SIZE_FILE > 0 && e.target.files[0].size <= MAX_SIZE_FILE) {
         setFiles([...e.target.files]);
       } else {
-        setWarningText(`файл больше ${MAX_SIZE_IN_MB} Мб`);
+        setWarningText(`файл больше ${maxSizeMb} Мб`);
       }
     }
   };

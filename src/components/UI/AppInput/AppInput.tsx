@@ -14,7 +14,7 @@ type AppInputProps = {
   mask?: string | RegExp[];
   maskChar?: string;
   customWrapperClass?: string;
-  onInput: (value: string, type?: string) => void;
+  onInput: (value: string, inputName: string) => void;
 };
 
 const AppInput = ({
@@ -31,7 +31,7 @@ const AppInput = ({
   onInput,
 }: AppInputProps): JSX.Element => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // onInput(e.target.value, name);
+    onInput(e.target.value, name);
   };
 
   return (
@@ -54,6 +54,7 @@ const AppInput = ({
         mask={mask}
         maskChar={maskChar}
         placeholder={placeholder}
+        value={value}
         onInput={handleInputChange}
       />
       {warningText && <span className={style.warningText}>{warningText}</span>}

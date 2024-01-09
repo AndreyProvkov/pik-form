@@ -1,10 +1,81 @@
+import { useState } from "react";
 import { AppInput } from "./UI/AppInput/AppInput";
-import style from "./FormPersonalData.module.scss";
 import { AppFileInput } from "./UI/AppFileInput/AppFileInput";
+import style from "./FormPersonalData.module.scss";
+
+type TYPE_INPUT_DATA = {
+  [key: string]: {
+    value: string;
+    error: string;
+  };
+};
+
+type TYPE_INPUT_FILE_DATA = {
+  [key: string]: {
+    value: File | null;
+    error: string;
+  };
+};
 
 const MAX_SIZE_PHOTO_MB = 40;
+const INIT_INPUT_DATA: TYPE_INPUT_DATA = {
+  date: {
+    value: "",
+    error: "",
+  },
+  name: {
+    value: "",
+    error: "",
+  },
+  email: {
+    value: "",
+    error: "",
+  },
+  passportSeries: {
+    value: "",
+    error: "",
+  },
+  passportDepartament: {
+    value: "",
+    error: "",
+  },
+  passportEditionDate: {
+    value: "",
+    error: "",
+  },
+};
+const INIT_INPUT_FILE_DATA: TYPE_INPUT_FILE_DATA = {
+  photoMainPagePassport: {
+    value: null,
+    error: "",
+  },
+  photoOldPassport: {
+    value: null,
+    error: "",
+  },
+  photoWithPassport: {
+    value: null,
+    error: "",
+  },
+};
 
 const FormPersonalData = () => {
+  const [inputData, setInputData] = useState(INIT_INPUT_DATA);
+  const [inputFileData, setInputFileData] = useState(INIT_INPUT_FILE_DATA);
+
+  const onInput = (value: string, inputName: string) => {
+    setInputData((inputData) => ({
+      ...inputData,
+      [inputName]: { ...inputData[inputName], value },
+    }));
+  };
+
+  const onChange = (value: File | null, inputName: string) => {
+    setInputFileData((inputData) => ({
+      ...inputData,
+      [inputName]: { ...inputData[inputName], value },
+    }));
+  };
 
   return (
     <div className={style.blocks}>
@@ -14,8 +85,8 @@ const FormPersonalData = () => {
           placeholder="Иванов Иван Иванович"
           name="name"
           customWrapperClass={style.customWrapperInput}
-          value={""}
-          onInput={() => {}}
+          value={inputData.name.value}
+          onInput={onInput}
         />
         <AppInput
           title="Дата рождения"
@@ -23,8 +94,8 @@ const FormPersonalData = () => {
           type="date"
           name="date"
           customWrapperClass={style.customWrapperInput}
-          value={""}
-          onInput={() => {}}
+          value={inputData.date.value}
+          onInput={onInput}
         />
         <AppInput
           title="Почта"
@@ -33,8 +104,8 @@ const FormPersonalData = () => {
           type="text"
           name="email"
           customWrapperClass={style.customWrapperInput}
-          value=""
-          onInput={() => {}}
+          value={inputData.email.value}
+          onInput={onInput}
         />
       </div>
       <div className={style.block}>
@@ -44,29 +115,29 @@ const FormPersonalData = () => {
           description="только паспорт РФ"
           placeholder="0000 000000"
           type="text"
-          name="passport"
+          name="passportSeries"
           mask="9999 999999"
           customWrapperClass={style.customWrapperInput}
-          value={""}
-          onInput={() => {}}
+          value={inputData.passportSeries.value}
+          onInput={onInput}
         />
         <AppInput
           title="Кем выдан"
           placeholder="Заполните точно как в паспорте"
           type="text"
-          name="department"
+          name="passportDepartament"
           customWrapperClass={style.customWrapperInput}
-          value={""}
-          onInput={() => {}}
+          value={inputData.passportDepartament.value}
+          onInput={onInput}
         />
         <AppInput
           title="Когда выдан"
           placeholder="дд.мм.гггг"
           type="date"
-          name="issue date"
+          name="passportEditionDate"
           customWrapperClass={style.customWrapperInput}
-          value=""
-          onInput={() => {}}
+          value={inputData.passportEditionDate.value}
+          onInput={onInput}
         />
       </div>
       <div className={style.block}>
@@ -80,17 +151,29 @@ const FormPersonalData = () => {
           <AppFileInput
             text="Паспорт, 2-3 стр."
             accept=".png, .jpg, .jpeg, .pdf"
-            maxSizeMb={MAX_SIZE_PHOTO_MB}
+            // maxSizeMb={MAX_SIZE_PHOTO_MB}
+            name="photoMainPagePassport"
+            file={inputFileData.photoMainPagePassport.value}
+            warningText={inputFileData.photoMainPagePassport.error}
+            onChange={onChange}
           />
           <AppFileInput
             text="Паспорт, 19 стр."
             accept=".png, .jpg, .jpeg, .pdf"
-            maxSizeMb={MAX_SIZE_PHOTO_MB}
+            // maxSizeMb={MAX_SIZE_PHOTO_MB}
+            name="photoOldPassport"
+            file={inputFileData.photoOldPassport.value}
+            warningText={inputFileData.photoOldPassport.error}
+            onChange={onChange}
           />
           <AppFileInput
             text="Фото с паспортом"
             accept=".png, .jpg, .jpeg, .pdf"
-            maxSizeMb={MAX_SIZE_PHOTO_MB}
+            // maxSizeMb={MAX_SIZE_PHOTO_MB}
+            name="photoWithPassport"
+            file={inputFileData.photoWithPassport.value}
+            warningText={inputFileData.photoWithPassport.error}
+            onChange={onChange}
           />
         </div>
         <p className={style.fileText}>

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import style from "./AppFileInput.module.scss";
 import { CrossIcon } from "../../../assets/icons/CrossIcon";
 import { PdfIcon } from "../../../assets/icons/PdfIcon";
@@ -11,9 +10,13 @@ import { AnyFileIcon } from "../../../assets/icons/AnyFileIcon";
 
 type Props = {
   text: string;
+  name: string;
+  file: File | null;
+  warningText?: string;
   accept?: string;
-  maxSizeMb?: number;
-  onChange?: (files: FileList) => void;
+  // maxSizeMb?: number;
+  onChange: (file: File | null, inputName: string) => void;
+  onBlur?: () => void;
 };
 
 type ImgBlockType = {
@@ -26,12 +29,16 @@ const IMAGE_TYPES: string[] = ["image/jpeg", "image/jpg", "image/png"];
 const AppFileInput: React.FC<Props> = ({
   text,
   accept,
-  maxSizeMb = 0,
+  name,
+  file,
+  warningText,
+  // maxSizeMb = 0,
   onChange,
+  onBlur,
 }) => {
-  const [files, setFiles] = useState<File[]>([]);
-  const [warningText, setWarningText] = useState<string>("");
-  const MAX_SIZE_FILE = maxSizeMb * 1024 * 1024;
+  // const [files, setFiles] = useState<File[]>([]);
+  // const [warningText, setWarningText] = useState<string>("");
+  // const MAX_SIZE_FILE = maxSizeMb * 1024 * 1024;
   const TYPE_FILE: { [index: string]: (arg0: ImgBlockType) => JSX.Element } = {
     ...Object.fromEntries(
       IMAGE_TYPES.map((key) => [
@@ -46,19 +53,20 @@ const AppFileInput: React.FC<Props> = ({
 
   const handleOnChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
-      if (MAX_SIZE_FILE > 0 && e.target.files[0].size <= MAX_SIZE_FILE) {
-        setFiles([...e.target.files]);
-      } else {
-        setWarningText(`файл больше ${maxSizeMb} Мб`);
-      }
+      // if (MAX_SIZE_FILE > 0 && e.target.files[0].size <= MAX_SIZE_FILE) {
+      //   setFiles([...e.target.files]);
+      onChange(e.target.files[0], name);
+      // } else {
+      //   setWarningText(`файл больше ${maxSizeMb} Мб`);
+      // }
     }
   };
 
-  const removeFile = () => {
-    setFiles([]);
+  const handleClickCrossButton = () => {
+    onChange(null, name);
   };
 
-  const resetWarningText = () => setWarningText("");
+  // const resetWarningText = () => setWarningText("");
 
   const ImgBlock: React.FC<ImgBlockType> = ({
     alt = "icon: миниатюра файла",
@@ -75,27 +83,32 @@ const AppFileInput: React.FC<Props> = ({
 
   return (
     <div className={style.container}>
-      {files.length ? (
+      {file ? (
         <div className={style.fileContainer}>
-          <CrossIcon customClass={style.crossButton} onClick={removeFile} />
+          <CrossIcon
+            customClass={style.crossButton}
+            onClick={handleClickCrossButton}
+          />
           <span className={style.fileType}>
-            {TYPE_FILE[files[0].type] ? (
-              TYPE_FILE[files[0].type]({ src: files[0] })
+            {TYPE_FILE[file.type] ? (
+              TYPE_FILE[file.type]({ src: file })
             ) : (
               <AnyFileIcon customClass={style.iconType} />
             )}
           </span>
-          <span title={files[0].name} className={style.fileName}>
-            {files[0].name}
+          <span title={file.name} className={style.fileName}>
+            {file.name}
           </span>
         </div>
       ) : (
-        <label className={style.label} onClick={resetWarningText}>
+        <label className={style.label}>
           <input
             className={style.inputFile}
+            name={name}
             type="file"
             accept={accept}
             onChange={handleOnChangeFile}
+            onBlur={onBlur}
           />
           <span className={style.symbol}>&#43;</span>
           <span className={style.text}>{text}</span>

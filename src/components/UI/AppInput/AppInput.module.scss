@@ -41,6 +41,12 @@
     display: none;
   }
 
+  &[type="date"] {
+    &:focus {
+      color: general.$textColor;
+    }
+  }
+
   &:focus {
     border-color: general.$inputFocusColor;
     box-shadow: 0px 0px 5px 0px general.$inputFocusColor;

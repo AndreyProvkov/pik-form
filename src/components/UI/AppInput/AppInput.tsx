@@ -46,6 +46,7 @@ const AppInput = ({
       )}
       <InputMask
         className={classNames(style.input, {
+          [style.datePlaceholder]: !value && type === "date",
           [style.warning]: warningText,
           [style.complete]: !warningText,
         })}

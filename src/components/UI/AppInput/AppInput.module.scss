@@ -41,14 +41,6 @@
     display: none;
   }
 
-  &[type="date"] {
-    color: general.$inputDatePlaceholderColor;
-
-    &:focus {
-      color: general.$textColor;
-    }
-  }
-
   &:focus {
     border-color: general.$inputFocusColor;
     box-shadow: 0px 0px 5px 0px general.$inputFocusColor;
@@ -57,6 +49,10 @@
   &::placeholder {
     color: general.$inputPlaceholderColor;
     opacity: 0.5;
+  }
+
+  &.datePlaceholder {
+    color: general.$inputDatePlaceholderColor;
   }
 
   &.complete {

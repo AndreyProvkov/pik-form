@@ -2,6 +2,8 @@ import InputMask from "react-input-mask";
 import classNames from "classnames";
 import style from "./AppInput.module.scss";
 
+// TODO Вынести в отдельный компонент input type=date
+
 type AppInputProps = {
   title?: string;
   description?: string;
@@ -14,6 +16,8 @@ type AppInputProps = {
   mask?: string | RegExp[];
   maskChar?: string;
   customWrapperClass?: string;
+  minYear?: string;
+  maxYear?: string;
   onInput: (value: string, inputName: string) => void;
 };
 
@@ -28,10 +32,35 @@ const AppInput = ({
   maskChar = "",
   mask = "",
   customWrapperClass,
+  minYear = "1920",
+  maxYear = "2050",
   onInput,
 }: AppInputProps): JSX.Element => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onInput(e.target.value, name);
+    if (type === "date") {
+      onInput(formatDate(e.target.value, e.type), name);
+    } else {
+      onInput(e.target.value, name);
+    }
+  };
+
+  const formatDate = (value: string, eventType: string): string => {
+    const date = value.split("-");
+    let year = date[0];
+
+    if (
+      year &&
+      +year < +minYear &&
+      (Number(year).toString().length >= 4 || eventType === "blur")
+    ) {
+      year = minYear.toString();
+    }
+    if (+year > +maxYear && Number(year).toString().length >= 4) {
+      year = maxYear.toString();
+    }
+
+    date[0] = year;
+    return date.join("-");
   };
 
   return (
@@ -56,7 +85,10 @@ const AppInput = ({
         maskChar={maskChar}
         placeholder={placeholder}
         value={value}
+        min={type === "date" ? `${minYear}-01-01` : ""}
+        max={type === "date" ? `${maxYear}-01-01` : ""}
         onInput={handleInputChange}
+        onBlur={type === "date" ? handleInputChange : undefined}
       />
       {warningText && <span className={style.warningText}>{warningText}</span>}
     </label>

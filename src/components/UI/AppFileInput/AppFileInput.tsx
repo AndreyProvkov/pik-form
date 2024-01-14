@@ -17,6 +17,7 @@ type Props = {
   maxSizeMb?: number;
   onChange: (file: File | undefined, inputName: string) => void;
   onBlur?: () => void;
+  deleteFile: (inputName: string) => void;
 };
 
 type ImgBlockType = {
@@ -35,6 +36,7 @@ const AppFileInput: React.FC<Props> = ({
   maxSizeMb = 512,
   onChange,
   onBlur,
+  deleteFile,
 }) => {
   const MAX_FILE_SIZE_BYTES = maxSizeMb * 1024 * 1024;
   const TYPE_FILE: { [index: string]: (arg0: ImgBlockType) => JSX.Element } = {
@@ -60,7 +62,7 @@ const AppFileInput: React.FC<Props> = ({
   };
 
   const handleClickCrossButton = () => {
-    onChange(null, name);
+    deleteFile(name);
   };
 
   const ImgBlock: React.FC<ImgBlockType> = ({

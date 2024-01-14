@@ -77,6 +77,13 @@ const FormPersonalData = () => {
     }));
   };
 
+  const deleteFile = (inputName: string): void => {
+    setInputFileData((inputData) => ({
+      ...inputData,
+      [inputName]: { ...inputData[inputName], value: undefined },
+    }));
+  };
+
   return (
     <div className={style.blocks}>
       <div className={style.block}>
@@ -157,6 +164,7 @@ const FormPersonalData = () => {
             maxSizeMb={MAX_SIZE_PHOTO_MB}
             warningText={inputFileData.photoMainPagePassport.error}
             onChange={onChange}
+            deleteFile={deleteFile}
           />
           <AppFileInput
             text="Паспорт, 19 стр."
@@ -167,6 +175,7 @@ const FormPersonalData = () => {
             maxSizeMb={MAX_SIZE_PHOTO_MB}
             warningText={inputFileData.photoOldPassport.error}
             onChange={onChange}
+            deleteFile={deleteFile}
           />
           <AppFileInput
             text="Фото с паспортом"
@@ -177,6 +186,7 @@ const FormPersonalData = () => {
             maxSizeMb={MAX_SIZE_PHOTO_MB}
             warningText={inputFileData.photoWithPassport.error}
             onChange={onChange}
+            deleteFile={deleteFile}
           />
         </div>
         <p className={style.fileText}>

@@ -11,11 +11,11 @@ import { AnyFileIcon } from "../../../assets/icons/AnyFileIcon";
 type Props = {
   text: string;
   name: string;
-  file: File | null;
+  file: File | undefined;
   warningText?: string;
   accept?: string;
-  // maxSizeMb?: number;
-  onChange: (file: File | null, inputName: string) => void;
+  maxSizeMb?: number;
+  onChange: (file: File | undefined, inputName: string) => void;
   onBlur?: () => void;
 };
 
@@ -32,13 +32,11 @@ const AppFileInput: React.FC<Props> = ({
   name,
   file,
   warningText,
-  // maxSizeMb = 0,
+  maxSizeMb = 512,
   onChange,
   onBlur,
 }) => {
-  // const [files, setFiles] = useState<File[]>([]);
-  // const [warningText, setWarningText] = useState<string>("");
-  // const MAX_SIZE_FILE = maxSizeMb * 1024 * 1024;
+  const MAX_FILE_SIZE_BYTES = maxSizeMb * 1024 * 1024;
   const TYPE_FILE: { [index: string]: (arg0: ImgBlockType) => JSX.Element } = {
     ...Object.fromEntries(
       IMAGE_TYPES.map((key) => [
@@ -53,20 +51,17 @@ const AppFileInput: React.FC<Props> = ({
 
   const handleOnChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
-      // if (MAX_SIZE_FILE > 0 && e.target.files[0].size <= MAX_SIZE_FILE) {
-      //   setFiles([...e.target.files]);
-      onChange(e.target.files[0], name);
-      // } else {
-      //   setWarningText(`файл больше ${maxSizeMb} Мб`);
-      // }
+      if (e.target.files[0].size <= MAX_FILE_SIZE_BYTES) {
+        onChange(e.target.files[0], name);
+      } else {
+        onChange(undefined, name);
+      }
     }
   };
 
   const handleClickCrossButton = () => {
     onChange(null, name);
   };
-
-  // const resetWarningText = () => setWarningText("");
 
   const ImgBlock: React.FC<ImgBlockType> = ({
     alt = "icon: миниатюра файла",
@@ -107,6 +102,7 @@ const AppFileInput: React.FC<Props> = ({
             name={name}
             type="file"
             accept={accept}
+            value={file}
             onChange={handleOnChangeFile}
             onBlur={onBlur}
           />

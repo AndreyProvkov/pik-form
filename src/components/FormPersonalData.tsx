@@ -12,7 +12,7 @@ type TYPE_INPUT_DATA = {
 
 type TYPE_INPUT_FILE_DATA = {
   [key: string]: {
-    value: File | null;
+    value: File | undefined;
     error: string;
   };
 };
@@ -46,15 +46,15 @@ const INIT_INPUT_DATA: TYPE_INPUT_DATA = {
 };
 const INIT_INPUT_FILE_DATA: TYPE_INPUT_FILE_DATA = {
   photoMainPagePassport: {
-    value: null,
+    value: undefined,
     error: "",
   },
   photoOldPassport: {
-    value: null,
+    value: undefined,
     error: "",
   },
   photoWithPassport: {
-    value: null,
+    value: undefined,
     error: "",
   },
 };
@@ -63,14 +63,14 @@ const FormPersonalData = () => {
   const [inputData, setInputData] = useState(INIT_INPUT_DATA);
   const [inputFileData, setInputFileData] = useState(INIT_INPUT_FILE_DATA);
 
-  const onInput = (value: string, inputName: string) => {
+  const onInput = (value: string, inputName: string): void => {
     setInputData((inputData) => ({
       ...inputData,
       [inputName]: { ...inputData[inputName], value },
     }));
   };
 
-  const onChange = (value: File | null, inputName: string) => {
+  const onChange = (value: File | undefined, inputName: string): void => {
     setInputFileData((inputData) => ({
       ...inputData,
       [inputName]: { ...inputData[inputName], value },
@@ -154,6 +154,7 @@ const FormPersonalData = () => {
             // maxSizeMb={MAX_SIZE_PHOTO_MB}
             name="photoMainPagePassport"
             file={inputFileData.photoMainPagePassport.value}
+            maxSizeMb={MAX_SIZE_PHOTO_MB}
             warningText={inputFileData.photoMainPagePassport.error}
             onChange={onChange}
           />
@@ -163,6 +164,7 @@ const FormPersonalData = () => {
             // maxSizeMb={MAX_SIZE_PHOTO_MB}
             name="photoOldPassport"
             file={inputFileData.photoOldPassport.value}
+            maxSizeMb={MAX_SIZE_PHOTO_MB}
             warningText={inputFileData.photoOldPassport.error}
             onChange={onChange}
           />
@@ -172,6 +174,7 @@ const FormPersonalData = () => {
             // maxSizeMb={MAX_SIZE_PHOTO_MB}
             name="photoWithPassport"
             file={inputFileData.photoWithPassport.value}
+            maxSizeMb={MAX_SIZE_PHOTO_MB}
             warningText={inputFileData.photoWithPassport.error}
             onChange={onChange}
           />

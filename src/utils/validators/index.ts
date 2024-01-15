@@ -11,13 +11,13 @@ const validate = <T>(
 
   for (let i = 0; i < validators.length && validationResult === null; i++) {
     validationResult = validators[i](value);
-    console.log(validationResult);
   }
 
   return validationResult;
 };
 
-export { required } from "./required";
+export { requiredValidator } from "./requiredValidator";
+export { emailValidator } from "./emailValidator";
 
 export type { ValidationResult, Validator, GetValidator };
 export { validate };

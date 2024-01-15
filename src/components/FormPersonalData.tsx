@@ -2,7 +2,11 @@ import { useState } from "react";
 import { AppInput } from "./UI/AppInput/AppInput";
 import { AppFileInput } from "./UI/AppFileInput/AppFileInput";
 import style from "./FormPersonalData.module.scss";
-import { required, validate } from "../utils/validators";
+import {
+  requiredValidator,
+  emailValidator,
+  validate,
+} from "../utils/validators";
 import type { ValidationResult, Validator } from "../utils/validators";
 
 type TYPE_INPUT_DEFAULT = {
@@ -30,49 +34,49 @@ const INIT_INPUT_DATA: TYPE_INPUT_DATA = {
   date: {
     value: "",
     error: "",
-    validators: [required()],
+    validators: [requiredValidator()],
   },
   name: {
     value: "",
     error: "",
-    validators: [required()],
+    validators: [requiredValidator()],
   },
   email: {
     value: "",
     error: "",
-    validators: [required()],
+    validators: [requiredValidator(), emailValidator()],
   },
   passportSeries: {
     value: "",
     error: "",
-    validators: [required()],
+    validators: [requiredValidator()],
   },
   passportDepartament: {
     value: "",
     error: "",
-    validators: [required()],
+    validators: [requiredValidator()],
   },
   passportEditionDate: {
     value: "",
     error: "",
-    validators: [required()],
+    validators: [requiredValidator()],
   },
 };
 const INIT_INPUT_FILE_DATA: TYPE_INPUT_FILE_DATA = {
   photoMainPagePassport: {
     value: undefined,
     error: "",
-    validators: [required()],
+    validators: [requiredValidator()],
   },
   photoOldPassport: {
     value: undefined,
     error: "",
-    validators: [required()],
+    validators: [requiredValidator()],
   },
   photoWithPassport: {
     value: undefined,
     error: "",
-    validators: [required()],
+    validators: [requiredValidator()],
   },
 };
 

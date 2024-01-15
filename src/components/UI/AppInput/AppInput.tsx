@@ -37,11 +37,15 @@ const AppInput = ({
   maxYear = "2050",
   onInput,
 }: AppInputProps): JSX.Element => {
+  // TODO сделать ввод более универсальным
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (type === "date") {
       onInput(formatDate(e.target.value, e.type), name);
     } else if (name === "name") {
       e.target.value = e.target.value.replace(/[^а-яА-Яa-zA-Z\s]/g, "");
+      onInput(e.target.value, name);
+    } else if (name === "email") {
+      e.target.value = e.target.value.replace(/[\s]/g, "");
       onInput(e.target.value, name);
     } else {
       onInput(e.target.value, name);

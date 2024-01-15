@@ -3,6 +3,7 @@ import { CrossIcon } from "../../../assets/icons/CrossIcon";
 import { PdfIcon } from "../../../assets/icons/PdfIcon";
 import { AnyFileIcon } from "../../../assets/icons/AnyFileIcon";
 import { ValidationResult } from "../../../utils/validators";
+import classNames from "classnames";
 
 // TODO Можно еще разбить на более простые компоненты (выбор файла/когда файл выбран)
 // TODO TYPE_FILE - возможно лучше использовать структуру Map
@@ -80,7 +81,11 @@ const AppFileInput: React.FC<Props> = ({
   };
 
   return (
-    <div className={style.container}>
+    <div
+      className={classNames(style.container, {
+        [style.warningLabel]: warningText,
+      })}
+    >
       {file ? (
         <div className={style.fileContainer}>
           <CrossIcon

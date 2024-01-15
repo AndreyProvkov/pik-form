@@ -6,6 +6,7 @@ import {
   requiredValidator,
   emailValidator,
   validate,
+  dateValidator,
 } from "../utils/validators";
 import type { ValidationResult, Validator } from "../utils/validators";
 
@@ -34,7 +35,7 @@ const INIT_INPUT_DATA: TYPE_INPUT_DATA = {
   date: {
     value: "",
     error: "",
-    validators: [requiredValidator()],
+    validators: [requiredValidator(), dateValidator()],
   },
   name: {
     value: "",

@@ -5,6 +5,7 @@ import type { ValidationResult } from "../../../utils/validators";
 import { CheckMark } from "../../../assets/icons/CheckMark";
 
 // TODO Вынести в отдельный компонент input type=date
+// TODO Для даты сделать нормальный максимальный и минимальный лимиты с выбором дня и месяца
 
 type AppInputProps = {
   title?: string;

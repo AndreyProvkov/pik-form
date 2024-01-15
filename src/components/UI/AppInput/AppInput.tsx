@@ -40,6 +40,9 @@ const AppInput = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (type === "date") {
       onInput(formatDate(e.target.value, e.type), name);
+    } else if (name === "name") {
+      e.target.value = e.target.value.replace(/[^а-яА-Яa-zA-Z\s]/g, "");
+      onInput(e.target.value, name);
     } else {
       onInput(e.target.value, name);
     }
@@ -62,6 +65,10 @@ const AppInput = ({
 
     date[0] = year;
     return date.join("-");
+  };
+
+  const handlerBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onInput(e.target.value.trim(), name);
   };
 
   return (
@@ -89,7 +96,7 @@ const AppInput = ({
         min={type === "date" ? `${minYear}-01-01` : ""}
         max={type === "date" ? `${maxYear}-01-01` : ""}
         onInput={handleInputChange}
-        onBlur={type === "date" ? handleInputChange : undefined}
+        onBlur={type === "date" ? handleInputChange : handlerBlur}
       />
       {warningText && <span className={style.warningText}>{warningText}</span>}
     </label>

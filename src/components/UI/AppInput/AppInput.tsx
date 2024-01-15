@@ -105,7 +105,13 @@ const AppInput = ({
           onInput={handleInputChange}
           onBlur={type === "date" ? handleInputChange : handlerBlur}
         />
-        {!warningText && value && <CheckMark customClass={style.checkMark} />}
+        {!warningText && value && (
+          <CheckMark
+            customClass={classNames(style.checkMark, {
+              [style.checkMarkForDate]: type === "date",
+            })}
+          />
+        )}
       </>
       {warningText && <span className={style.warningText}>{warningText}</span>}
     </label>

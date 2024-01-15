@@ -19,6 +19,7 @@ const validate = <T>(
 export { requiredValidator } from "./requiredValidator";
 export { emailValidator } from "./emailValidator";
 export { dateValidator } from "./dateValidator";
+export { minLengthValidator } from "./minLengthValidator";
 
 export type { ValidationResult, Validator, GetValidator };
 export { validate };

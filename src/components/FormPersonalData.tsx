@@ -7,6 +7,7 @@ import {
   emailValidator,
   validate,
   dateValidator,
+  minLengthValidator,
 } from "../utils/validators";
 import type { ValidationResult, Validator } from "../utils/validators";
 
@@ -50,7 +51,11 @@ const INIT_INPUT_DATA: TYPE_INPUT_DATA = {
   passportSeries: {
     value: "",
     error: "",
-    validators: [requiredValidator()],
+    validators: [
+      requiredValidator(),
+      minLengthValidator({ length: 4, message: "введите серию паспорта" }),
+      minLengthValidator({ length: 11, message: "введите номер паспорта" }),
+    ],
   },
   passportDepartament: {
     value: "",

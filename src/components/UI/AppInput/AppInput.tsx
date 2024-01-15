@@ -2,6 +2,7 @@ import InputMask from "react-input-mask";
 import classNames from "classnames";
 import style from "./AppInput.module.scss";
 import type { ValidationResult } from "../../../utils/validators";
+import { CheckMark } from "../../../assets/icons/CheckMark";
 
 // TODO Вынести в отдельный компонент input type=date
 
@@ -85,23 +86,26 @@ const AppInput = ({
           )}
         </div>
       )}
-      <InputMask
-        className={classNames(style.input, {
-          [style.datePlaceholder]: !value && type === "date",
-          [style.warning]: warningText,
-          [style.complete]: !warningText,
-        })}
-        type={type}
-        name={name}
-        mask={mask}
-        maskChar={maskChar}
-        placeholder={placeholder}
-        value={value}
-        min={type === "date" ? `${minYear}-01-01` : ""}
-        max={type === "date" ? `${maxYear}-01-01` : ""}
-        onInput={handleInputChange}
-        onBlur={type === "date" ? handleInputChange : handlerBlur}
-      />
+      <>
+        <InputMask
+          className={classNames(style.input, {
+            [style.datePlaceholder]: !value && type === "date",
+            [style.warning]: warningText,
+            [style.complete]: !warningText && value,
+          })}
+          type={type}
+          name={name}
+          mask={mask}
+          maskChar={maskChar}
+          placeholder={placeholder}
+          value={value}
+          min={type === "date" ? `${minYear}-01-01` : ""}
+          max={type === "date" ? `${maxYear}-01-01` : ""}
+          onInput={handleInputChange}
+          onBlur={type === "date" ? handleInputChange : handlerBlur}
+        />
+        {!warningText && value && <CheckMark customClass={style.checkMark} />}
+      </>
       {warningText && <span className={style.warningText}>{warningText}</span>}
     </label>
   );

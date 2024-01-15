@@ -71,6 +71,15 @@
   }
 }
 
+.checkMark {
+  height: 22px;
+  width: 22px;
+  stroke: general.$inputIconDefaultColor;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+}
+
 .warningText {
   position: absolute;
   bottom: -18px;

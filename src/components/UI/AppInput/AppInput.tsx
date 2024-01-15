@@ -1,13 +1,14 @@
 import InputMask from "react-input-mask";
 import classNames from "classnames";
 import style from "./AppInput.module.scss";
+import type { ValidationResult } from "../../../utils/validators";
 
 // TODO Вынести в отдельный компонент input type=date
 
 type AppInputProps = {
   title?: string;
   description?: string;
-  warningText?: string;
+  warningText: ValidationResult;
   placeholder?: string;
   inputText?: string;
   type?: "text" | "date";

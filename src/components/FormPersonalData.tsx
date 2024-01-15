@@ -2,60 +2,77 @@ import { useState } from "react";
 import { AppInput } from "./UI/AppInput/AppInput";
 import { AppFileInput } from "./UI/AppFileInput/AppFileInput";
 import style from "./FormPersonalData.module.scss";
+import { required, validate } from "../utils/validators";
+import type { ValidationResult, Validator } from "../utils/validators";
+
+type TYPE_INPUT_DEFAULT = {
+  [key: string]: {
+    error: ValidationResult;
+  };
+};
 
 type TYPE_INPUT_DATA = {
   [key: string]: {
     value: string;
-    error: string;
+    validators: Validator<string>[];
   };
-};
+} & TYPE_INPUT_DEFAULT;
 
 type TYPE_INPUT_FILE_DATA = {
   [key: string]: {
     value: File | undefined;
-    error: string;
+    validators: Validator<File | undefined>[];
   };
-};
+} & TYPE_INPUT_DEFAULT;
 
 const MAX_SIZE_PHOTO_MB = 40;
 const INIT_INPUT_DATA: TYPE_INPUT_DATA = {
   date: {
     value: "",
     error: "",
+    validators: [required()],
   },
   name: {
     value: "",
     error: "",
+    validators: [required()],
   },
   email: {
     value: "",
     error: "",
+    validators: [required()],
   },
   passportSeries: {
     value: "",
     error: "",
+    validators: [required()],
   },
   passportDepartament: {
     value: "",
     error: "",
+    validators: [required()],
   },
   passportEditionDate: {
     value: "",
     error: "",
+    validators: [required()],
   },
 };
 const INIT_INPUT_FILE_DATA: TYPE_INPUT_FILE_DATA = {
   photoMainPagePassport: {
     value: undefined,
     error: "",
+    validators: [required()],
   },
   photoOldPassport: {
     value: undefined,
     error: "",
+    validators: [required()],
   },
   photoWithPassport: {
     value: undefined,
     error: "",
+    validators: [required()],
   },
 };
 
@@ -66,14 +83,25 @@ const FormPersonalData = () => {
   const onInput = (value: string, inputName: string): void => {
     setInputData((inputData) => ({
       ...inputData,
-      [inputName]: { ...inputData[inputName], value },
+      [inputName]: {
+        ...inputData[inputName],
+        value,
+        error: validate(value, inputData[inputName].validators),
+      },
     }));
   };
 
   const onChange = (value: File | undefined, inputName: string): void => {
     setInputFileData((inputData) => ({
       ...inputData,
-      [inputName]: { ...inputData[inputName], value },
+      [inputName]: {
+        ...inputData[inputName],
+        value,
+        error: validate<File | undefined>(
+          value,
+          inputData[inputName].validators
+        ),
+      },
     }));
   };
 
@@ -81,6 +109,16 @@ const FormPersonalData = () => {
     setInputFileData((inputData) => ({
       ...inputData,
       [inputName]: { ...inputData[inputName], value: undefined },
+    }));
+    setInputFileData((inputData) => ({
+      ...inputData,
+      [inputName]: {
+        ...inputData[inputName],
+        error: validate(
+          inputData[inputName].value,
+          inputData[inputName].validators
+        ),
+      },
     }));
   };
 
@@ -93,6 +131,7 @@ const FormPersonalData = () => {
           name="name"
           customWrapperClass={style.customWrapperInput}
           value={inputData.name.value}
+          warningText={inputData.name.error}
           onInput={onInput}
         />
         <AppInput
@@ -102,6 +141,7 @@ const FormPersonalData = () => {
           name="date"
           customWrapperClass={style.customWrapperInput}
           value={inputData.date.value}
+          warningText={inputData.date.error}
           onInput={onInput}
         />
         <AppInput
@@ -112,6 +152,7 @@ const FormPersonalData = () => {
           name="email"
           customWrapperClass={style.customWrapperInput}
           value={inputData.email.value}
+          warningText={inputData.email.error}
           onInput={onInput}
         />
       </div>
@@ -126,6 +167,7 @@ const FormPersonalData = () => {
           mask="9999 999999"
           customWrapperClass={style.customWrapperInput}
           value={inputData.passportSeries.value}
+          warningText={inputData.passportSeries.error}
           onInput={onInput}
         />
         <AppInput
@@ -135,6 +177,7 @@ const FormPersonalData = () => {
           name="passportDepartament"
           customWrapperClass={style.customWrapperInput}
           value={inputData.passportDepartament.value}
+          warningText={inputData.passportDepartament.error}
           onInput={onInput}
         />
         <AppInput
@@ -144,6 +187,7 @@ const FormPersonalData = () => {
           name="passportEditionDate"
           customWrapperClass={style.customWrapperInput}
           value={inputData.passportEditionDate.value}
+          warningText={inputData.passportEditionDate.error}
           onInput={onInput}
         />
       </div>
@@ -158,7 +202,6 @@ const FormPersonalData = () => {
           <AppFileInput
             text="Паспорт, 2-3 стр."
             accept=".png, .jpg, .jpeg, .pdf"
-            // maxSizeMb={MAX_SIZE_PHOTO_MB}
             name="photoMainPagePassport"
             file={inputFileData.photoMainPagePassport.value}
             maxSizeMb={MAX_SIZE_PHOTO_MB}
@@ -169,7 +212,6 @@ const FormPersonalData = () => {
           <AppFileInput
             text="Паспорт, 19 стр."
             accept=".png, .jpg, .jpeg, .pdf"
-            // maxSizeMb={MAX_SIZE_PHOTO_MB}
             name="photoOldPassport"
             file={inputFileData.photoOldPassport.value}
             maxSizeMb={MAX_SIZE_PHOTO_MB}
@@ -180,7 +222,6 @@ const FormPersonalData = () => {
           <AppFileInput
             text="Фото с паспортом"
             accept=".png, .jpg, .jpeg, .pdf"
-            // maxSizeMb={MAX_SIZE_PHOTO_MB}
             name="photoWithPassport"
             file={inputFileData.photoWithPassport.value}
             maxSizeMb={MAX_SIZE_PHOTO_MB}

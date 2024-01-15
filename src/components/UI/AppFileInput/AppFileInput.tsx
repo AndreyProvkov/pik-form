@@ -2,6 +2,7 @@ import style from "./AppFileInput.module.scss";
 import { CrossIcon } from "../../../assets/icons/CrossIcon";
 import { PdfIcon } from "../../../assets/icons/PdfIcon";
 import { AnyFileIcon } from "../../../assets/icons/AnyFileIcon";
+import { ValidationResult } from "../../../utils/validators";
 
 // TODO Можно еще разбить на более простые компоненты (выбор файла/когда файл выбран)
 // TODO TYPE_FILE - возможно лучше использовать структуру Map
@@ -12,7 +13,7 @@ type Props = {
   text: string;
   name: string;
   file: File | undefined;
-  warningText?: string;
+  warningText: ValidationResult;
   accept?: string;
   maxSizeMb?: number;
   onChange: (file: File | undefined, inputName: string) => void;

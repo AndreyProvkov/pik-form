@@ -8,6 +8,7 @@ import {
   validate,
   dateValidator,
   minLengthValidator,
+  passportEditionDateValidator,
 } from "../utils/validators";
 import type { ValidationResult, Validator } from "../utils/validators";
 
@@ -65,7 +66,7 @@ const INIT_INPUT_DATA: TYPE_INPUT_DATA = {
   passportEditionDate: {
     value: "",
     error: "",
-    validators: [requiredValidator()],
+    validators: [],
   },
 };
 const INIT_INPUT_FILE_DATA: TYPE_INPUT_FILE_DATA = {
@@ -91,6 +92,24 @@ const FormPersonalData = () => {
   const [inputFileData, setInputFileData] = useState(INIT_INPUT_FILE_DATA);
 
   const onInput = (value: string, inputName: string): void => {
+    if (inputName === "passportEditionDate") {
+      inputData.passportEditionDate.validators = [
+        requiredValidator(),
+        passportEditionDateValidator({
+          birthdayDate: inputData.date.value,
+          message: "неверная дата выдачи",
+        }),
+      ];
+    }
+    if (inputName === "date") {
+      inputData.passportEditionDate.validators = [
+        passportEditionDateValidator({
+          birthdayDate: value,
+          message: "неверная дата выдачи",
+        }),
+      ];
+    }
+
     setInputData((inputData) => ({
       ...inputData,
       [inputName]: {

@@ -68,6 +68,16 @@ const INIT_INPUT_DATA: TYPE_INPUT_DATA = {
     error: "",
     validators: [],
   },
+  passportDepartamentCode: {
+    value: "",
+    error: "",
+    validators: [
+      minLengthValidator({
+        length: 7,
+        message: "код должен состоять из 6-ти цифр",
+      }),
+    ],
+  },
 };
 const INIT_INPUT_FILE_DATA: TYPE_INPUT_FILE_DATA = {
   photoMainPagePassport: {
@@ -217,6 +227,17 @@ const FormPersonalData = () => {
           customWrapperClass={style.customWrapperInput}
           value={inputData.passportEditionDate.value}
           warningText={inputData.passportEditionDate.error}
+          onInput={onInput}
+        />
+        <AppInput
+          title="Код подразделения"
+          placeholder="000-000"
+          type="text"
+          name="passportDepartamentCode"
+          mask="999-999"
+          customWrapperClass={style.customWrapperInput}
+          value={inputData.passportDepartamentCode.value}
+          warningText={inputData.passportDepartamentCode.error}
           onInput={onInput}
         />
       </div>

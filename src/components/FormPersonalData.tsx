@@ -131,11 +131,14 @@ const FormPersonalData = () => {
   };
 
   const onChange = (value: File | undefined, inputName: string): void => {
+    const inputFile =
+      value && value.size / 1024 / 1024 < MAX_SIZE_PHOTO_MB ? value : undefined;
+
     setInputFileData((inputData) => ({
       ...inputData,
       [inputName]: {
         ...inputData[inputName],
-        value,
+        value: inputFile,
         error: validate<File | undefined>(
           value,
           inputData[inputName].validators

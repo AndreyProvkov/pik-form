@@ -16,7 +16,6 @@ type Props = {
   file: File | undefined;
   warningText: ValidationResult;
   accept?: string;
-  maxSizeMb?: number;
   onChange: (file: File | undefined, inputName: string) => void;
   onBlur?: () => void;
   deleteFile: (inputName: string) => void;
@@ -35,12 +34,10 @@ const AppFileInput: React.FC<Props> = ({
   name,
   file,
   warningText,
-  maxSizeMb = 512,
   onChange,
   onBlur,
   deleteFile,
 }) => {
-  const MAX_FILE_SIZE_BYTES = maxSizeMb * 1024 * 1024;
   const TYPE_FILE: { [index: string]: (arg0: ImgBlockType) => JSX.Element } = {
     ...Object.fromEntries(
       IMAGE_TYPES.map((key) => [
@@ -55,11 +52,7 @@ const AppFileInput: React.FC<Props> = ({
 
   const handleOnChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
-      if (e.target.files[0].size <= MAX_FILE_SIZE_BYTES) {
         onChange(e.target.files[0], name);
-      } else {
-        onChange(undefined, name);
-      }
     }
   };
 

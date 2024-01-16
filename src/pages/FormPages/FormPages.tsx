@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormAboutApartament } from "../../components/FormAboutApartament";
 import { FormPersonalData } from "../../components/FormPersonalData";
 import { AppButton } from "../../components/UI/AppButton/AppButton";
@@ -49,7 +49,7 @@ const INIT_INPUT_PERSONAL_DATA: TYPE_INPUT_DATA = {
   passportEditionDate: {
     value: "",
     error: "",
-    validators: [],
+    validators: [requiredValidator()],
   },
   passportDepartamentCode: {
     value: "",
@@ -98,10 +98,13 @@ const INIT_INPUT_FILE_PERSONAL_DATA: TYPE_INPUT_FILE_DATA = {
   },
 };
 
-//TODO Создать отдельный layout с заголовком
+//TODO Создать отдельный layout с заголовком и кнопками
 
 const FormPages = () => {
   const [step, setStep] = useState("step1");
+  const [isValidFieldsPersonalData, setIsValidFieldsPersonalData] =
+    useState(true);
+  const [isDisabledNextStep, setIsDisabledNextStep] = useState(true);
   const [inputPersonalData, setInputPersonalData] = useState(
     INIT_INPUT_PERSONAL_DATA
   );
@@ -109,7 +112,64 @@ const FormPages = () => {
     INIT_INPUT_FILE_PERSONAL_DATA
   );
 
-  const handlerClickButton = () => setStep("step2");
+  useEffect(() => {
+    // TODO DRY!!!!
+    let isError = false;
+
+    // Проверяем сперва один набор полей, потом другой
+    for (const value of Object.values(inputPersonalData)) {
+      if (value.error) {
+        isError = true;
+        break;
+      }
+    }
+    for (const value of Object.values(inputFilePersonalData)) {
+      if (value.error) {
+        isError = true;
+        break;
+      }
+    }
+
+    if (isError) {
+      setIsValidFieldsPersonalData(false);
+      if (isDisabledNextStep) {
+        setIsDisabledNextStep(false);
+      }
+    } else {
+      setIsValidFieldsPersonalData(true);
+    }
+  }, [inputPersonalData, inputFilePersonalData]);
+
+  const handleClickButtonPersonalData = () => {
+    for (const inputName of Object.keys(inputPersonalData)) {
+      setInputPersonalData((inputData) => ({
+        ...inputData,
+        [inputName]: {
+          ...inputData[inputName],
+          error: validate(
+            inputData[inputName].value,
+            inputData[inputName].validators
+          ),
+        },
+      }));
+    }
+    for (const inputName of Object.keys(inputFilePersonalData)) {
+      setInputFilePersonalData((inputData) => ({
+        ...inputData,
+        [inputName]: {
+          ...inputData[inputName],
+          error: validate(
+            inputData[inputName].value,
+            inputData[inputName].validators
+          ),
+        },
+      }));
+    }
+
+    if (!isDisabledNextStep && isValidFieldsPersonalData) {
+      setStep("step2");
+    }
+  };
 
   const onInputPersonalData = (value: string, inputName: string): void => {
     // TODO переделать на более красивое решение
@@ -208,7 +268,8 @@ const FormPages = () => {
           <AppButton
             title="Далее"
             customStyle={style.buttonPageOne}
-            onClick={handlerClickButton}
+            onClick={handleClickButtonPersonalData}
+            disabled={!isValidFieldsPersonalData}
           />
         </>
       ) : (

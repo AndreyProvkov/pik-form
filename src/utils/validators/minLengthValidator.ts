@@ -14,6 +14,10 @@ const minLengthValidator: GetValidator<Options, string> = (
   }
 ) => {
   return (value) => {
+    if (!value) {
+      return null;
+    }
+
     return value.length >= options.length ? null : options.message;
   };
 };

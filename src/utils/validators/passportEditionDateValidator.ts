@@ -13,12 +13,16 @@ const passportEditionDateValidator: GetValidator<Options, string> = (
   }
 ) => {
   return (value) => {
+    const inputDateInMs = new Date(value).getTime();
+
+    if (inputDateInMs >= Date.now()) {
+      return options.message;
+    }
     if (!value || !options.birthdayDate) {
       return null;
     }
-    const inputDateInMs = new Date(value).getTime();
-    return getAgeByDate(options.birthdayDate) - getAgeByDate(value) >= 14 &&
-      inputDateInMs <= Date.now()
+
+    return getAgeByDate(options.birthdayDate) - getAgeByDate(value) >= 14
       ? null
       : options.message;
   };

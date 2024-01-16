@@ -1,202 +1,28 @@
-import { useState } from "react";
 import { AppInput } from "./UI/AppInput/AppInput";
 import { AppFileInput } from "./UI/AppFileInput/AppFileInput";
+import type { TYPE_INPUT_DATA } from "../interfaces/InputData";
+import type { TYPE_INPUT_FILE_DATA } from "../interfaces/InputFileData";
 import style from "./FormPersonalData.module.scss";
-import {
-  requiredValidator,
-  emailValidator,
-  validate,
-  dateValidator,
-  minLengthValidator,
-  passportEditionDateValidator,
-  maxSizeFileValidator,
-} from "../utils/validators";
-import type { ValidationResult, Validator } from "../utils/validators";
 
-type TYPE_INPUT_DEFAULT = {
-  [key: string]: {
-    error: ValidationResult;
-  };
+type Props = {
+  inputData: TYPE_INPUT_DATA;
+  inputFileData: TYPE_INPUT_FILE_DATA;
+  maxSizeFile: number;
+  onBlurFileInput: (inputName: string) => void;
+  deleteFile: (inputName: string) => void;
+  onChange: (file: File | undefined, inputName: string) => void;
+  onInput: (value: string, inputName: string) => void;
 };
 
-type TYPE_INPUT_DATA = {
-  [key: string]: {
-    value: string;
-    validators: Validator<string>[];
-  };
-} & TYPE_INPUT_DEFAULT;
-
-type TYPE_INPUT_FILE_DATA = {
-  [key: string]: {
-    value: File | undefined;
-    validators: Validator<File | undefined>[];
-  };
-} & TYPE_INPUT_DEFAULT;
-
-const MAX_SIZE_PHOTO_MB = 40;
-const INIT_INPUT_DATA: TYPE_INPUT_DATA = {
-  date: {
-    value: "",
-    error: "",
-    validators: [requiredValidator(), dateValidator()],
-  },
-  name: {
-    value: "",
-    error: "",
-    validators: [requiredValidator()],
-  },
-  email: {
-    value: "",
-    error: "",
-    validators: [requiredValidator(), emailValidator()],
-  },
-  passportSeries: {
-    value: "",
-    error: "",
-    validators: [
-      requiredValidator(),
-      minLengthValidator({ length: 4, message: "введите серию паспорта" }),
-      minLengthValidator({ length: 11, message: "введите номер паспорта" }),
-    ],
-  },
-  passportDepartament: {
-    value: "",
-    error: "",
-    validators: [requiredValidator()],
-  },
-  passportEditionDate: {
-    value: "",
-    error: "",
-    validators: [],
-  },
-  passportDepartamentCode: {
-    value: "",
-    error: "",
-    validators: [
-      minLengthValidator({
-        length: 7,
-        message: "код должен состоять из 6-ти цифр",
-      }),
-    ],
-  },
-};
-const INIT_INPUT_FILE_DATA: TYPE_INPUT_FILE_DATA = {
-  photoMainPagePassport: {
-    value: undefined,
-    error: "",
-    validators: [
-      requiredValidator(),
-      maxSizeFileValidator({
-        maxSizeInMb: MAX_SIZE_PHOTO_MB,
-        message: `файл должен быть до ${MAX_SIZE_PHOTO_MB}Мб`,
-      }),
-    ],
-  },
-  photoOldPassport: {
-    value: undefined,
-    error: "",
-    validators: [
-      requiredValidator(),
-      maxSizeFileValidator({
-        maxSizeInMb: MAX_SIZE_PHOTO_MB,
-        message: `файл должен быть до ${MAX_SIZE_PHOTO_MB}Мб`,
-      }),
-    ],
-  },
-  photoWithPassport: {
-    value: undefined,
-    error: "",
-    validators: [
-      requiredValidator(),
-      maxSizeFileValidator({
-        maxSizeInMb: MAX_SIZE_PHOTO_MB,
-        message: `файл должен быть до ${MAX_SIZE_PHOTO_MB}Мб`,
-      }),
-    ],
-  },
-};
-
-const FormPersonalData = () => {
-  const [inputData, setInputData] = useState(INIT_INPUT_DATA);
-  const [inputFileData, setInputFileData] = useState(INIT_INPUT_FILE_DATA);
-
-  const onInput = (value: string, inputName: string): void => {
-    // TODO переделать на более красивое решение
-    if (inputName === "passportEditionDate") {
-      inputData.passportEditionDate.validators = [
-        requiredValidator(),
-        passportEditionDateValidator({
-          birthdayDate: inputData.date.value,
-          message: "неверная дата выдачи",
-        }),
-      ];
-    }
-    if (inputName === "date") {
-      inputData.passportEditionDate.validators = [
-        passportEditionDateValidator({
-          birthdayDate: value,
-          message: "неверная дата выдачи",
-        }),
-      ];
-    }
-
-    setInputData((inputData) => ({
-      ...inputData,
-      [inputName]: {
-        ...inputData[inputName],
-        value,
-        error: validate(value, inputData[inputName].validators),
-      },
-    }));
-  };
-
-  const onChange = (value: File | undefined, inputName: string): void => {
-    const inputFile =
-      value && value.size / 1024 / 1024 < MAX_SIZE_PHOTO_MB ? value : undefined;
-
-    setInputFileData((inputData) => ({
-      ...inputData,
-      [inputName]: {
-        ...inputData[inputName],
-        value: inputFile,
-        error: validate<File | undefined>(
-          value,
-          inputData[inputName].validators
-        ),
-      },
-    }));
-  };
-
-  const deleteFile = (inputName: string): void => {
-    setInputFileData((inputData) => ({
-      ...inputData,
-      [inputName]: { ...inputData[inputName], value: undefined },
-    }));
-    setInputFileData((inputData) => ({
-      ...inputData,
-      [inputName]: {
-        ...inputData[inputName],
-        error: validate(
-          inputData[inputName].value,
-          inputData[inputName].validators
-        ),
-      },
-    }));
-  };
-
-  const onBlurFileInput = (inputName: string) => {
-    setInputFileData((inputData) => ({
-      ...inputData,
-      [inputName]: {
-        ...inputData[inputName],
-        error: validate(
-          inputData[inputName].value,
-          inputData[inputName].validators
-        ),
-      },
-    }));
-  };
-
+const FormPersonalData: React.FC<Props> = ({
+  inputData,
+  inputFileData,
+  maxSizeFile,
+  onBlurFileInput,
+  deleteFile,
+  onChange,
+  onInput,
+}) => {
   return (
     <div className={style.blocks}>
       <div className={style.block}>
@@ -280,9 +106,9 @@ const FormPersonalData = () => {
       <div className={style.block}>
         <h2 className={style.title}>Фото документов</h2>
         <div className={style.fileBlock}>
-          {MAX_SIZE_PHOTO_MB > 0 && (
+          {maxSizeFile > 0 && (
             <span className={style.fileDescription}>
-              jpg, png, pdf, не больше {MAX_SIZE_PHOTO_MB} Мб
+              jpg, png, pdf, не больше {maxSizeFile} Мб
             </span>
           )}
           <AppFileInput

@@ -9,6 +9,7 @@ import {
   dateValidator,
   minLengthValidator,
   passportEditionDateValidator,
+  maxSizeFileValidator,
 } from "../utils/validators";
 import type { ValidationResult, Validator } from "../utils/validators";
 
@@ -83,17 +84,35 @@ const INIT_INPUT_FILE_DATA: TYPE_INPUT_FILE_DATA = {
   photoMainPagePassport: {
     value: undefined,
     error: "",
-    validators: [requiredValidator()],
+    validators: [
+      requiredValidator(),
+      maxSizeFileValidator({
+        maxSizeInMb: MAX_SIZE_PHOTO_MB,
+        message: `файл должен быть до ${MAX_SIZE_PHOTO_MB}Мб`,
+      }),
+    ],
   },
   photoOldPassport: {
     value: undefined,
     error: "",
-    validators: [requiredValidator()],
+    validators: [
+      requiredValidator(),
+      maxSizeFileValidator({
+        maxSizeInMb: MAX_SIZE_PHOTO_MB,
+        message: `файл должен быть до ${MAX_SIZE_PHOTO_MB}Мб`,
+      }),
+    ],
   },
   photoWithPassport: {
     value: undefined,
     error: "",
-    validators: [requiredValidator()],
+    validators: [
+      requiredValidator(),
+      maxSizeFileValidator({
+        maxSizeInMb: MAX_SIZE_PHOTO_MB,
+        message: `файл должен быть до ${MAX_SIZE_PHOTO_MB}Мб`,
+      }),
+    ],
   },
 };
 
@@ -102,6 +121,7 @@ const FormPersonalData = () => {
   const [inputFileData, setInputFileData] = useState(INIT_INPUT_FILE_DATA);
 
   const onInput = (value: string, inputName: string): void => {
+    // TODO переделать на более красивое решение
     if (inputName === "passportEditionDate") {
       inputData.passportEditionDate.validators = [
         requiredValidator(),
@@ -152,6 +172,19 @@ const FormPersonalData = () => {
       ...inputData,
       [inputName]: { ...inputData[inputName], value: undefined },
     }));
+    setInputFileData((inputData) => ({
+      ...inputData,
+      [inputName]: {
+        ...inputData[inputName],
+        error: validate(
+          inputData[inputName].value,
+          inputData[inputName].validators
+        ),
+      },
+    }));
+  };
+
+  const onBlurFileInput = (inputName: string) => {
     setInputFileData((inputData) => ({
       ...inputData,
       [inputName]: {
@@ -257,9 +290,9 @@ const FormPersonalData = () => {
             accept=".png, .jpg, .jpeg, .pdf"
             name="photoMainPagePassport"
             file={inputFileData.photoMainPagePassport.value}
-            maxSizeMb={MAX_SIZE_PHOTO_MB}
             warningText={inputFileData.photoMainPagePassport.error}
             onChange={onChange}
+            onBlur={onBlurFileInput}
             deleteFile={deleteFile}
           />
           <AppFileInput
@@ -267,9 +300,9 @@ const FormPersonalData = () => {
             accept=".png, .jpg, .jpeg, .pdf"
             name="photoOldPassport"
             file={inputFileData.photoOldPassport.value}
-            maxSizeMb={MAX_SIZE_PHOTO_MB}
             warningText={inputFileData.photoOldPassport.error}
             onChange={onChange}
+            onBlur={onBlurFileInput}
             deleteFile={deleteFile}
           />
           <AppFileInput
@@ -277,9 +310,9 @@ const FormPersonalData = () => {
             accept=".png, .jpg, .jpeg, .pdf"
             name="photoWithPassport"
             file={inputFileData.photoWithPassport.value}
-            maxSizeMb={MAX_SIZE_PHOTO_MB}
             warningText={inputFileData.photoWithPassport.error}
             onChange={onChange}
+            onBlur={onBlurFileInput}
             deleteFile={deleteFile}
           />
         </div>

@@ -21,6 +21,7 @@ export { emailValidator } from "./emailValidator";
 export { dateValidator } from "./dateValidator";
 export { minLengthValidator } from "./minLengthValidator";
 export { passportEditionDateValidator } from "./passportEditionDateValidator";
+export { maxSizeFileValidator } from "./maxSizeFileValidator";
 
 export type { ValidationResult, Validator, GetValidator };
 export { validate };

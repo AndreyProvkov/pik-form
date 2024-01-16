@@ -17,7 +17,7 @@ type Props = {
   warningText: ValidationResult;
   accept?: string;
   onChange: (file: File | undefined, inputName: string) => void;
-  onBlur?: () => void;
+  onBlur?: (inputName: string) => void;
   deleteFile: (inputName: string) => void;
 };
 
@@ -52,12 +52,16 @@ const AppFileInput: React.FC<Props> = ({
 
   const handleOnChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
-        onChange(e.target.files[0], name);
+      onChange(e.target.files[0], name);
     }
   };
 
   const handleClickCrossButton = () => {
     deleteFile(name);
+  };
+
+  const handleBlur = () => {
+    onBlur && onBlur(name);
   };
 
   const ImgBlock: React.FC<ImgBlockType> = ({
@@ -97,20 +101,22 @@ const AppFileInput: React.FC<Props> = ({
           </span>
         </div>
       ) : (
-        <label className={style.label}>
-          <input
-            className={style.inputFile}
-            name={name}
-            type="file"
-            accept={accept}
-            value={file}
-            onChange={handleOnChangeFile}
-            onBlur={onBlur}
-          />
-          <span className={style.symbol}>&#43;</span>
-          <span className={style.text}>{text}</span>
+        <>
+          <label className={style.label}>
+            <input
+              className={style.inputFile}
+              name={name}
+              type="file"
+              accept={accept}
+              value={file}
+              onChange={handleOnChangeFile}
+              onBlur={handleBlur}
+            />
+            <span className={style.symbol}>&#43;</span>
+            <span className={style.text}>{text}</span>
+          </label>
           {warningText && <span className={style.warning}>{warningText}</span>}
-        </label>
+        </>
       )}
     </div>
   );

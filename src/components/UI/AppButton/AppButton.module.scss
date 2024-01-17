@@ -10,7 +10,6 @@
   padding: 18px 40px;
   border-radius: 4px;
   font-weight: 500;
-  line-height: general.$largeLineHeight;
   cursor: pointer;
 
   // TODO добавить плавность анимации и стили когда кнопка нажата
@@ -21,5 +20,20 @@
   &:disabled {
     background-color: general.$btnBgDisabledColor;
     cursor: default;
+  }
+}
+
+.buttonLight {
+  background-color: general.$btnLightBgColor;
+  border: 1px solid general.$btnLightBorderColor;
+  color: general.$btnLightTextColor;
+
+  // TODO добавить плавность анимации и стили когда кнопка нажата
+  &:hover {
+    background-color: general.$btnLightBgHoverColor;
+  }
+
+  &:disabled {
+    background-color: general.$btnLightDisabledColor;
   }
 }

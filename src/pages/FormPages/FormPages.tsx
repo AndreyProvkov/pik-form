@@ -139,6 +139,7 @@ const FormPages = () => {
   }, [inputPersonalData, inputFilePersonalData, checkValidationError]);
 
   const handleClickButtonPersonalData = () => {
+    // TODO DRY!!!
     // Валидируем все поля при клике
     for (const inputName of Object.keys(inputPersonalData)) {
       setInputPersonalData((inputData) => ({
@@ -262,6 +263,11 @@ const FormPages = () => {
     }));
   };
 
+  const handlePrevStep = () => {
+    // TODO можно сделать универсальный обработчик для возвращения на предыдущую страницу (если у нас много стр)
+    setStep("step1");
+  };
+
   return (
     <div className={style.container}>
       {step === "step1" ? (
@@ -286,7 +292,24 @@ const FormPages = () => {
       ) : (
         <>
           <h1 className={style.title}>Шаг 2 из 2 | О квартире</h1>
+          <p className={style.text}>
+            Мы составим договор аренды: в нем не будет упоминания залога, но
+            будет пункт о страховке
+          </p>
           <FormAboutApartament />
+          <div className={style.buttonWrapper}>
+            <AppButton
+              title="Назад"
+              mode="light"
+              customStyle={style.buttonPageTwo}
+              onClick={handlePrevStep}
+            />
+            <AppButton
+              title="Далее"
+              customStyle={style.buttonPageTwo}
+              onClick={() => {}}
+            />
+          </div>
         </>
       )}
     </div>

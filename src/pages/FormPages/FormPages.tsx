@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FormAboutApartament } from "../../components/FormAboutApartament";
 import { FormPersonalData } from "../../components/FormPersonalData";
 import { AppButton } from "../../components/UI/AppButton/AppButton";
@@ -102,9 +102,9 @@ const INIT_INPUT_FILE_PERSONAL_DATA: TYPE_INPUT_FILE_DATA = {
 
 const FormPages = () => {
   const [step, setStep] = useState("step1");
+  const [clickOccurred, setClickOccurred] = useState(0);
   const [isValidFieldsPersonalData, setIsValidFieldsPersonalData] =
     useState(true);
-  const [isDisabledNextStep, setIsDisabledNextStep] = useState(true);
   const [inputPersonalData, setInputPersonalData] = useState(
     INIT_INPUT_PERSONAL_DATA
   );
@@ -112,35 +112,34 @@ const FormPages = () => {
     INIT_INPUT_FILE_PERSONAL_DATA
   );
 
+  const checkValidationError = useCallback(
+    (inputsData: (TYPE_INPUT_DATA | TYPE_INPUT_FILE_DATA)[]) => {
+      let isError = false;
+
+      inputsData.forEach((inputData) => {
+        for (const value of Object.values(inputData)) {
+          if (value.error) {
+            isError = true;
+            break;
+          }
+        }
+      });
+
+      return isError;
+    },
+    []
+  );
+
   useEffect(() => {
-    // TODO DRY!!!!
-    let isError = false;
-
-    // Проверяем сперва один набор полей, потом другой
-    for (const value of Object.values(inputPersonalData)) {
-      if (value.error) {
-        isError = true;
-        break;
-      }
-    }
-    for (const value of Object.values(inputFilePersonalData)) {
-      if (value.error) {
-        isError = true;
-        break;
-      }
-    }
-
-    if (isError) {
+    if (checkValidationError([inputPersonalData, inputFilePersonalData])) {
       setIsValidFieldsPersonalData(false);
-      if (isDisabledNextStep) {
-        setIsDisabledNextStep(false);
-      }
     } else {
       setIsValidFieldsPersonalData(true);
     }
-  }, [inputPersonalData, inputFilePersonalData]);
+  }, [inputPersonalData, inputFilePersonalData, checkValidationError]);
 
   const handleClickButtonPersonalData = () => {
+    // Валидируем все поля при клике
     for (const inputName of Object.keys(inputPersonalData)) {
       setInputPersonalData((inputData) => ({
         ...inputData,
@@ -166,9 +165,21 @@ const FormPages = () => {
       }));
     }
 
-    if (!isDisabledNextStep && isValidFieldsPersonalData) {
+    setIsValidFieldsPersonalData(false);
+
+    if (clickOccurred) {
+      if (checkValidationError([inputPersonalData, inputFilePersonalData])) {
+        setIsValidFieldsPersonalData(false);
+      } else {
+        setIsValidFieldsPersonalData(true);
+      }
+    }
+
+    if (isValidFieldsPersonalData && clickOccurred) {
       setStep("step2");
     }
+
+    setClickOccurred((prevState) => prevState + 1);
   };
 
   const onInputPersonalData = (value: string, inputName: string): void => {

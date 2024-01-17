@@ -1,0 +1,46 @@
+@use "../../../styles/general";
+
+.innerContainer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  column-gap: 20px;
+}
+
+.inputCustomWrapper {
+  max-width: 220px;
+  display: inline-block;
+}
+
+.priceText {
+  margin: 0;
+  font-size: general.$smallFontSize;
+  line-height: general.$smallLineHeight;
+  max-width: 121px;
+}
+
+.price {
+  font-weight: 700;
+}
+
+.attentionBlock {
+  margin-top: 20px;
+  color: general.$attentionColor;
+  font-size: general.$smallFontSize;
+  line-height: general.$midLineHeight;
+}
+
+.attentionText {
+  margin: 0;
+}
+
+.attentionLink {
+  text-decoration: none;
+  color: general.$attentionColor;
+  border-bottom: 1px solid general.$attentionColor;
+  transition: border-bottom 0.3s;
+
+  &:hover {
+    border-bottom: 1px solid transparent;
+  }
+}

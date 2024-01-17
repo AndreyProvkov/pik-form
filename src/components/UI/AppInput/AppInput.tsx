@@ -49,6 +49,14 @@ const AppInput = ({
     } else if (name === "email") {
       e.target.value = e.target.value.replace(/[\s]/g, "");
       onInput(e.target.value, name);
+    } else if (name === "price") {
+      e.target.value = e.target.value.replace(/[^0-9]/g, "");
+      const unmaskedValue = e.target.value.replace(/\s/g, "");
+      const formattedValue = unmaskedValue.replace(
+        /\B(?=(\d{3})+(?!\d))/g,
+        " "
+      );
+      onInput(formattedValue, name);
     } else {
       onInput(e.target.value, name);
     }

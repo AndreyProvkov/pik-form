@@ -5,6 +5,8 @@ $smallFontSize: 1.3rem; // 13px
 $largeFontSize: 2.5rem; // 25px
 $largestFontSize: 3rem; // 30px
 $baseLineHeight: 1;
+$smallLineHeight: $baseLineHeight * 1.07; // 107%
+$midLineHeight: $baseLineHeight * 1.15; // 115%
 $mediumLineHeight: $baseLineHeight * 1.24; // 124%
 $largeLineHeight: $baseLineHeight * 1.39; // 139%
 $fontFamily: "GraphikLCG";

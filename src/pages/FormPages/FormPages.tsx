@@ -97,6 +97,19 @@ const INIT_INPUT_FILE_PERSONAL_DATA: TYPE_INPUT_FILE_DATA = {
     ],
   },
 };
+const INIT_INPUT_APARTAMENT_DATA: TYPE_INPUT_DATA = {
+  price: {
+    value: "",
+    error: "",
+    validators: [
+      requiredValidator(),
+      minLengthValidator({
+        length: 6,
+        message: "не менее 5 цифр",
+      }),
+    ],
+  },
+};
 
 //TODO Создать отдельный layout с заголовком и кнопками
 
@@ -110,6 +123,9 @@ const FormPages = () => {
   );
   const [inputFilePersonalData, setInputFilePersonalData] = useState(
     INIT_INPUT_FILE_PERSONAL_DATA
+  );
+  const [inputAboutApartamentData, setInputAboutApartamentData] = useState(
+    INIT_INPUT_APARTAMENT_DATA
   );
 
   const checkValidationError = useCallback(
@@ -263,6 +279,17 @@ const FormPages = () => {
     }));
   };
 
+  const onInputAboutApartament = (value: string, inputName: string) => {
+    setInputAboutApartamentData((inputData) => ({
+      ...inputData,
+      [inputName]: {
+        ...inputData[inputName],
+        value,
+        error: validate(value, inputData[inputName].validators),
+      },
+    }));
+  };
+
   const handlePrevStep = () => {
     // TODO можно сделать универсальный обработчик для возвращения на предыдущую страницу (если у нас много стр)
     setStep("step1");
@@ -296,7 +323,10 @@ const FormPages = () => {
             Мы составим договор аренды: в нем не будет упоминания залога, но
             будет пункт о страховке
           </p>
-          <FormAboutApartament />
+          <FormAboutApartament
+            inputData={inputAboutApartamentData}
+            onInput={onInputAboutApartament}
+          />
           <div className={style.buttonWrapper}>
             <AppButton
               title="Назад"

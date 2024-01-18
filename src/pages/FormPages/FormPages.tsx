@@ -10,6 +10,7 @@ import {
   minLengthValidator,
   passportEditionDateValidator,
   maxSizeFileValidator,
+  minPriceValidator,
 } from "../../utils/validators";
 import { TYPE_INPUT_DATA } from "../../interfaces/InputData";
 import { TYPE_INPUT_FILE_DATA } from "../../interfaces/InputFileData";
@@ -103,9 +104,9 @@ const INIT_INPUT_APARTAMENT_DATA: TYPE_INPUT_DATA = {
     error: "",
     validators: [
       requiredValidator(),
-      minLengthValidator({
-        length: 6,
-        message: "не менее 5 цифр",
+      minPriceValidator({
+        minPrice: 20000,
+        message: "не менее 20 000₽",
       }),
     ],
   },

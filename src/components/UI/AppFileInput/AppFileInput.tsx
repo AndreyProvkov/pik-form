@@ -1,9 +1,9 @@
-import style from "./AppFileInput.module.scss";
 import { CrossIcon } from "../../../assets/icons/CrossIcon";
 import { PdfIcon } from "../../../assets/icons/PdfIcon";
 import { AnyFileIcon } from "../../../assets/icons/AnyFileIcon";
 import { ValidationResult } from "../../../utils/validators";
 import classNames from "classnames";
+import style from "./AppFileInput.module.scss";
 
 // TODO Можно еще разбить на более простые компоненты (выбор файла/когда файл выбран)
 // TODO TYPE_FILE - возможно лучше использовать структуру Map

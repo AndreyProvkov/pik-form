@@ -15,6 +15,7 @@ import {
 import { TYPE_INPUT_DATA } from "../../interfaces/InputData";
 import { TYPE_INPUT_FILE_DATA } from "../../interfaces/InputFileData";
 import style from "./FormPages.module.scss";
+import { TYPE_INPUT_FILES_DATA } from "../../interfaces/inputFilesData";
 
 const MAX_SIZE_PHOTO_MB = 40;
 const INIT_INPUT_PERSONAL_DATA: TYPE_INPUT_DATA = {
@@ -111,6 +112,13 @@ const INIT_INPUT_APARTAMENT_DATA: TYPE_INPUT_DATA = {
     ],
   },
 };
+const INIT_INPUT_FILE_APARTAMENT_DATA: TYPE_INPUT_FILES_DATA = {
+  docs: {
+    value: [],
+    error: "",
+    validators: [requiredValidator()],
+  },
+};
 
 //TODO Создать отдельный layout с заголовком и кнопками
 
@@ -128,6 +136,8 @@ const FormPages = () => {
   const [inputAboutApartamentData, setInputAboutApartamentData] = useState(
     INIT_INPUT_APARTAMENT_DATA
   );
+  const [inputFileAboutApartamentData, setInputFileAboutApartamentData] =
+    useState(INIT_INPUT_FILE_APARTAMENT_DATA);
 
   const checkValidationError = useCallback(
     (inputsData: (TYPE_INPUT_DATA | TYPE_INPUT_FILE_DATA)[]) => {
@@ -291,6 +301,44 @@ const FormPages = () => {
     }));
   };
 
+  // TODO DRY!!!
+  const onChangeAboutApartament = (value: File[], inputName: string) => {
+    setInputFileAboutApartamentData((inputData) => ({
+      ...inputData,
+      [inputName]: {
+        ...inputData[inputName],
+        value,
+        error: validate(value, inputData[inputName].validators),
+      },
+    }));
+  };
+
+  const deleteFileAboutApartament = (inputName: string) => {
+    setInputFileAboutApartamentData((inputData) => ({
+      ...inputData,
+      [inputName]: {
+        ...inputData[inputName],
+        error: validate(
+          inputData[inputName].value,
+          inputData[inputName].validators
+        ),
+      },
+    }));
+  };
+
+  const onBlurFileInputAboutApartament = (inputName: string) => {
+    setInputFileAboutApartamentData((inputData) => ({
+      ...inputData,
+      [inputName]: {
+        ...inputData[inputName],
+        error: validate(
+          inputData[inputName].value,
+          inputData[inputName].validators
+        ),
+      },
+    }));
+  };
+
   const handlePrevStep = () => {
     // TODO можно сделать универсальный обработчик для возвращения на предыдущую страницу (если у нас много стр)
     setStep("step1");
@@ -326,7 +374,11 @@ const FormPages = () => {
           </p>
           <FormAboutApartament
             inputData={inputAboutApartamentData}
+            inputFileData={inputFileAboutApartamentData}
             onInput={onInputAboutApartament}
+            onChange={onChangeAboutApartament}
+            deleteFile={deleteFileAboutApartament}
+            onBlurFileInput={onBlurFileInputAboutApartament}
           />
           <div className={style.buttonWrapper}>
             <AppButton

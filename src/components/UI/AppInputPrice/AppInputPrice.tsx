@@ -1,5 +1,6 @@
 import { AppInput } from "../AppInput/AppInput";
 import type { ValidationResult } from "../../../utils/validators";
+import { calculateInsurance } from "../../../utils/calculateInsurance";
 import style from "./AppInputPrice.module.scss";
 
 type AppInputPriceProps = {
@@ -71,7 +72,9 @@ const AppInputPrice: React.FC<AppInputPriceProps> = ({
         <p className={style.priceText}>
           Стоимость страховки
           <br />
-          <span className={style.price}>400₽/мес</span>
+          <span className={style.price}>
+            {value.length >= 6 ? calculateInsurance(value) : " -- "}₽/мес
+          </span>
           <br />
           (платит арендатор)
         </p>

@@ -25,6 +25,35 @@ const AppInputPrice: React.FC<AppInputPriceProps> = ({
   value,
   onInput,
 }) => {
+  const limitValue = (value: string): string => {
+    let currentValue;
+    let formattedValue = "";
+    const valueAsNumber = +value.replace(/\s/g, "");
+    const maxLimitAsNumber = +maxLimit.replace(/\s/g, "");
+    const minLimitAsNumber = +minLimit.replace(/\s/g, "");
+
+    currentValue = valueAsNumber;
+
+    if (valueAsNumber < minLimitAsNumber && value.length === minLimit.length) {
+      currentValue = minLimitAsNumber;
+    }
+    if (valueAsNumber > maxLimitAsNumber && value.length >= minLimit.length) {
+      currentValue = maxLimitAsNumber;
+    }
+
+    if (currentValue) {
+      formattedValue = currentValue
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+
+    return formattedValue;
+  };
+
+  const handleInput = (value: string, inputName: string) => {
+    onInput(limitValue(value), inputName);
+  };
+
   return (
     <div className={style.container}>
       <div className={style.innerContainer}>
@@ -37,7 +66,7 @@ const AppInputPrice: React.FC<AppInputPriceProps> = ({
           warningText={warningText}
           customWrapperClass={style.inputCustomWrapper}
           value={value}
-          onInput={onInput}
+          onInput={handleInput}
         />
         <p className={style.priceText}>
           Стоимость страховки

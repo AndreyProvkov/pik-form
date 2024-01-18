@@ -1,5 +1,6 @@
 import { AppInputPrice } from "./UI/AppInputPrice/AppInputPrice";
 import { AppFilesInput } from "./UI/AppFilesInput/AppFilesInput";
+import { AppInput } from "./UI/AppInput/AppInput";
 import type { TYPE_INPUT_DATA } from "../interfaces/InputData";
 import type { TYPE_INPUT_FILES_DATA } from "../interfaces/inputFilesData";
 import style from "./FormAboutApartament.module.scss";
@@ -26,6 +27,16 @@ const FormAboutApartament: React.FC<Props> = ({
 }) => {
   return (
     <div className={style.blocks}>
+      <AppInput
+        title="Адрес: город, улица, дом, квартира"
+        placeholder="Город, улица, дом, кв"
+        name="address"
+        dadataType="address"
+        warningText={inputData.address.error}
+        value={inputData.address.value}
+        customWrapperClass={style.address}
+        onInput={onInput}
+      />
       <AppInputPrice
         title="Стоимость аренды"
         warningText={inputData.price.error}

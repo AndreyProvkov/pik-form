@@ -111,6 +111,11 @@ const INIT_INPUT_APARTAMENT_DATA: TYPE_INPUT_DATA = {
       }),
     ],
   },
+  address: {
+    value: "",
+    error: "",
+    validators: [requiredValidator()],
+  },
 };
 const INIT_INPUT_FILE_APARTAMENT_DATA: TYPE_INPUT_FILES_DATA = {
   docs: {

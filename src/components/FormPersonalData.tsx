@@ -30,6 +30,7 @@ const FormPersonalData: React.FC<Props> = ({
           title="Фамилия Имя Отчество"
           placeholder="Иванов Иван Иванович"
           name="name"
+          dadataType="fio"
           customWrapperClass={style.customWrapperInput}
           value={inputData.name.value}
           warningText={inputData.name.error}

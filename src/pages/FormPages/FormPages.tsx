@@ -130,8 +130,14 @@ const INIT_INPUT_FILE_APARTAMENT_DATA: TYPE_INPUT_FILES_DATA = {
 const FormPages = () => {
   const [step, setStep] = useState("step1");
   const [clickOccurred, setClickOccurred] = useState(0);
+  const [clickOccurredAboutApartament, setClickOccurredAboutApartament] =
+    useState(0);
   const [isValidFieldsPersonalData, setIsValidFieldsPersonalData] =
     useState(true);
+  const [
+    isValidFieldsAboutApartamentData,
+    setIsValidFieldsAboutApartamentData,
+  ] = useState(true);
   const [inputPersonalData, setInputPersonalData] = useState(
     INIT_INPUT_PERSONAL_DATA
   );
@@ -145,7 +151,13 @@ const FormPages = () => {
     useState(INIT_INPUT_FILE_APARTAMENT_DATA);
 
   const checkValidationError = useCallback(
-    (inputsData: (TYPE_INPUT_DATA | TYPE_INPUT_FILE_DATA)[]) => {
+    (
+      inputsData: (
+        | TYPE_INPUT_DATA
+        | TYPE_INPUT_FILE_DATA
+        | TYPE_INPUT_FILES_DATA
+      )[]
+    ) => {
       let isError = false;
 
       inputsData.forEach((inputData) => {
@@ -344,6 +356,76 @@ const FormPages = () => {
     }));
   };
 
+  const submitForm = () => {
+  };
+
+  const handleClickButtonAboutApartamentData = () => {
+    // TODO DRY!!!
+    // Валидируем все поля при клике
+    for (const inputName of Object.keys(inputAboutApartamentData)) {
+      setInputAboutApartamentData((inputData) => ({
+        ...inputData,
+        [inputName]: {
+          ...inputData[inputName],
+          error: validate(
+            inputData[inputName].value,
+            inputData[inputName].validators
+          ),
+        },
+      }));
+    }
+    for (const inputName of Object.keys(inputFileAboutApartamentData)) {
+      setInputFileAboutApartamentData((inputData) => ({
+        ...inputData,
+        [inputName]: {
+          ...inputData[inputName],
+          error: validate(
+            inputData[inputName].value,
+            inputData[inputName].validators
+          ),
+        },
+      }));
+    }
+
+    setIsValidFieldsAboutApartamentData(false);
+
+    if (clickOccurredAboutApartament) {
+      if (
+        checkValidationError([
+          inputAboutApartamentData,
+          inputFileAboutApartamentData,
+        ])
+      ) {
+        setIsValidFieldsAboutApartamentData(false);
+      } else {
+        setIsValidFieldsAboutApartamentData(true);
+      }
+    }
+
+    if (isValidFieldsAboutApartamentData && clickOccurredAboutApartament) {
+      submitForm();
+    }
+
+    setClickOccurredAboutApartament((prevState) => prevState + 1);
+  };
+
+  useEffect(() => {
+    if (
+      checkValidationError([
+        inputAboutApartamentData,
+        inputFileAboutApartamentData,
+      ])
+    ) {
+      setIsValidFieldsAboutApartamentData(false);
+    } else {
+      setIsValidFieldsAboutApartamentData(true);
+    }
+  }, [
+    inputAboutApartamentData,
+    inputFileAboutApartamentData,
+    checkValidationError,
+  ]);
+
   const handlePrevStep = () => {
     // TODO можно сделать универсальный обработчик для возвращения на предыдущую страницу (если у нас много стр)
     setStep("step1");
@@ -351,55 +433,58 @@ const FormPages = () => {
 
   return (
     <div className={style.container}>
-      {step === "step1" ? (
-        <>
-          <h1 className={style.title}>Шаг 1 из 2 | Личная информация</h1>
-          <FormPersonalData
-            inputFileData={inputFilePersonalData}
-            inputData={inputPersonalData}
-            maxSizeFile={MAX_SIZE_PHOTO_MB}
-            onBlurFileInput={onBlurFileInputPersonalData}
-            deleteFile={deleteFilePersonalData}
-            onChange={onChangePersonalData}
-            onInput={onInputPersonalData}
-          />
-          <AppButton
-            title="Далее"
-            customStyle={style.buttonPageOne}
-            onClick={handleClickButtonPersonalData}
-            disabled={!isValidFieldsPersonalData}
-          />
-        </>
-      ) : (
-        <>
-          <h1 className={style.title}>Шаг 2 из 2 | О квартире</h1>
-          <p className={style.text}>
-            Мы составим договор аренды: в нем не будет упоминания залога, но
-            будет пункт о страховке
-          </p>
-          <FormAboutApartament
-            inputData={inputAboutApartamentData}
-            inputFileData={inputFileAboutApartamentData}
-            onInput={onInputAboutApartament}
-            onChange={onChangeAboutApartament}
-            deleteFile={deleteFileAboutApartament}
-            onBlurFileInput={onBlurFileInputAboutApartament}
-          />
-          <div className={style.buttonWrapper}>
-            <AppButton
-              title="Назад"
-              mode="light"
-              customStyle={style.buttonPageTwo}
-              onClick={handlePrevStep}
+      <form>
+        {step === "step1" ? (
+          <>
+            <h1 className={style.title}>Шаг 1 из 2 | Личная информация</h1>
+            <FormPersonalData
+              inputFileData={inputFilePersonalData}
+              inputData={inputPersonalData}
+              maxSizeFile={MAX_SIZE_PHOTO_MB}
+              onBlurFileInput={onBlurFileInputPersonalData}
+              deleteFile={deleteFilePersonalData}
+              onChange={onChangePersonalData}
+              onInput={onInputPersonalData}
             />
             <AppButton
               title="Далее"
-              customStyle={style.buttonPageTwo}
-              onClick={() => {}}
+              customStyle={style.buttonPageOne}
+              onClick={handleClickButtonPersonalData}
+              disabled={!isValidFieldsPersonalData}
             />
-          </div>
-        </>
-      )}
+          </>
+        ) : (
+          <>
+            <h1 className={style.title}>Шаг 2 из 2 | О квартире</h1>
+            <p className={style.text}>
+              Мы составим договор аренды: в нем не будет упоминания залога, но
+              будет пункт о страховке
+            </p>
+            <FormAboutApartament
+              inputData={inputAboutApartamentData}
+              inputFileData={inputFileAboutApartamentData}
+              onInput={onInputAboutApartament}
+              onChange={onChangeAboutApartament}
+              deleteFile={deleteFileAboutApartament}
+              onBlurFileInput={onBlurFileInputAboutApartament}
+            />
+            <div className={style.buttonWrapper}>
+              <AppButton
+                title="Назад"
+                mode="light"
+                customStyle={style.buttonPageTwo}
+                onClick={handlePrevStep}
+              />
+              <AppButton
+                title="Далее"
+                customStyle={style.buttonPageTwo}
+                onClick={handleClickButtonAboutApartamentData}
+                disabled={!isValidFieldsAboutApartamentData}
+              />
+            </div>
+          </>
+        )}
+      </form>
     </div>
   );
 };

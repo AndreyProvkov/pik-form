@@ -2,7 +2,9 @@ import InputMask from "react-input-mask";
 import {
   AddressSuggestions,
   DaDataAddress,
+  DaDataFio,
   DaDataSuggestion,
+  FioSuggestions,
 } from "react-dadata";
 import classNames from "classnames";
 import type { ValidationResult } from "../../../utils/validators";
@@ -51,8 +53,11 @@ const AppInput = ({
   dadataType,
   onInput,
 }: AppInputProps): JSX.Element => {
-  const [suggestion, setSuggestion] = useState<
+  const [suggestionAddress, setSuggestionAddress] = useState<
     DaDataSuggestion<DaDataAddress> | undefined
+  >(undefined);
+  const [suggestionFio, setSuggestionFio] = useState<
+    DaDataSuggestion<DaDataFio> | undefined
   >(undefined);
 
   // TODO сделать ввод более универсальным
@@ -78,7 +83,7 @@ const AppInput = ({
       onInput(formattedValue, name);
     } else if (name === "address") {
       onInput("", name);
-      setSuggestion(undefined);
+      setSuggestionAddress(undefined);
     } else {
       onInput(e.currentTarget.value, name);
     }
@@ -109,7 +114,18 @@ const AppInput = ({
 
   const handleChange = (e: DaDataSuggestion<DaDataAddress> | undefined) => {
     if (e) {
-      setSuggestion(e);
+      if (dadataType === "address") {
+        setSuggestionAddress(e);
+      }
+      onInput(e.value, name);
+    }
+  };
+
+  const handleChangeFio = (e: DaDataSuggestion<DaDataFio> | undefined) => {
+    if (e) {
+      if (dadataType === "fio") {
+        setSuggestionFio(e);
+      }
       onInput(e.value, name);
     }
   };
@@ -141,7 +157,28 @@ const AppInput = ({
               onBlur: (e) => handlerBlur(e),
             }}
             onChange={handleChange}
-            value={suggestion}
+            defaultQuery={value}
+            value={suggestionAddress}
+          />
+        )}
+        {dadataType === "fio" && (
+          <FioSuggestions
+            token={API_KEY}
+            selectOnBlur={true}
+            inputProps={{
+              name,
+              placeholder,
+              className: classNames(style.input, {
+                [style.datePlaceholder]: !value && type === "date",
+                [style.warning]: warningText,
+                [style.complete]: !warningText && value,
+              }),
+              onInput: (e) => handleInputChange(e),
+              onBlur: (e) => handlerBlur(e),
+            }}
+            onChange={handleChangeFio}
+            defaultQuery={value}
+            value={suggestionFio}
           />
         )}
         {!dadataType && (

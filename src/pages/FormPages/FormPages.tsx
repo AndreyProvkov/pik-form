@@ -357,6 +357,27 @@ const FormPages = () => {
   };
 
   const submitForm = () => {
+    const formData = new FormData();
+    const arrayInputData = [
+      inputPersonalData,
+      inputFilePersonalData,
+      inputAboutApartamentData,
+      inputFileAboutApartamentData,
+    ];
+
+    arrayInputData.forEach((inputData) => {
+      for (const [key, data] of Object.entries(inputData)) {
+        if (Array.isArray(data.value)) {
+          for (let i = 0; i < data.value.length; i++) {
+            formData.append(key, data.value[i]);
+          }
+        } else {
+          formData.append(key, data.value);
+        }
+      }
+    });
+
+    console.table([...formData]);
   };
 
   const handleClickButtonAboutApartamentData = () => {

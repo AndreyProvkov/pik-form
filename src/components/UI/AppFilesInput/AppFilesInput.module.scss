@@ -1,0 +1,135 @@
+@use "../../../styles/general";
+
+.container {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.fileBlocks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.descriptionBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  justify-content: center;
+  flex-shrink: 0;
+  max-width: 220px;
+  max-height: 60px;
+}
+
+.title {
+  margin: 0;
+  font-size: general.$baseFontSize;
+  font-weight: 400;
+}
+
+.description {
+  margin: 0;
+  font-size: general.$smallFontSize;
+  line-height: general.$midLineHeight;
+}
+
+.fileContainer {
+  box-sizing: border-box;
+  border-radius: 5px;
+  width: 140px;
+  height: 60px;
+  border: 1px solid general.$fileInputBorderColor;
+  color: general.$fileInputTextColor;
+  text-align: center;
+  transition: box-shadow 0.3s;
+  position: relative;
+
+  &:hover {
+    box-shadow: 0px 0px 5px 0px general.$inputFocusColor;
+  }
+
+  &.warningLabel {
+    border-color: general.$inputErrorColor;
+    box-shadow: 0px 0px 5px 0px general.$inputErrorColor;
+  }
+}
+
+.label,
+.fileInnerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+  width: 100%;
+}
+
+.label {
+  cursor: pointer;
+  position: relative;
+}
+
+.inputFile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.symbol {
+  margin: 0;
+  font-size: general.$largestFontSize;
+  font-weight: 200;
+}
+
+.text,
+.fileName,
+.warning {
+  display: inline-block;
+  font-size: general.$smallFontSize;
+  line-height: general.$mediumLineHeight;
+}
+
+.text {
+  width: 100%;
+}
+
+.warning {
+  margin-top: 5px;
+  color: general.$fileInputWarningTextColor;
+}
+
+.crossButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  fill: general.$fileInputCrossColor;
+  cursor: pointer;
+}
+
+.fileType {
+  display: inline-block;
+}
+
+.iconType {
+  fill: general.$fileInputCrossColor;
+  width: 25px;
+  height: 25px;
+}
+
+.imgMiniature {
+  height: 30px;
+  max-width: 100px;
+  object-fit: contain;
+}
+
+.fileName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 80%;
+  margin: 0 auto;
+}

@@ -6,6 +6,7 @@ import classNames from "classnames";
 import style from "./AppFilesInput.module.scss";
 
 // TODO Разбить на компоненты совместимые с AppFileInput (кароч все под тип File[] переделать)
+// TODO Доделать добавление файлов, чтобы новые добавлялись к старым а не заменялись новыми
 
 type Props = {
   text: string;
